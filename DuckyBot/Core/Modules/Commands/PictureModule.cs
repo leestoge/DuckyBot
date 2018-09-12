@@ -235,7 +235,7 @@ namespace DuckyBot.Core.Modules.Commands
                 }
             } while (post == false); // Loop until its an image
         }
-        [Command("gamer")]
+        [Command("gamer")] // We live in a society...
         [Alias("g", "gamersriseup", "veronica")]
         [Summary("We live in a society")] // command summary
         public async Task GamersRiseUp()
