@@ -25,13 +25,13 @@ namespace DuckyBot.Core.Modules.Commands
                 int randomDuckyIndex = StaticRandom.Instance.Next(0, DuckyQuotes.Count); // get random number between 0 and list length
                 string quoteToPost = DuckyQuotes[randomDuckyIndex]; // store string at the random number position in the list
 
-                if (String.IsNullOrWhiteSpace(quoteToPost))
+                if (String.IsNullOrWhiteSpace(quoteToPost)) // filter out the empty line
                 {
-                    post = false;
+                    post = false; // post set to false
                     return;
                 }
                 await Context.Channel.SendMessageAsync(quoteToPost); // reply with the stored string
-            } while (post == false);
+            } while (post == false); // loop while post is false
         }
         [Command("addquote")] // Command declaration
         [Alias("addducky", "ad")] // command aliases (also trigger task)

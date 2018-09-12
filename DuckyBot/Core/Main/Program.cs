@@ -84,9 +84,14 @@ namespace DuckyBot.Core.Main
                 var z = await application.Owner.GetOrCreateDMChannelAsync(); // find dm channel to private message me
                 await z.SendMessageAsync($"[{DateTime.UtcNow.ToString("t")} [Commands] {Context.Message.Author.Username}: {Context.Message.Content} | Error: {Result.ErrorReason}"); // private message me with exact error reason
             }
+
             // Leveling up related
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
             // Leveling.UserSentMessage((SocketGuildUser)Context.User, (SocketTextChannel)Context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
             // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // Leveling up end
         }
 
@@ -94,14 +99,14 @@ namespace DuckyBot.Core.Main
         {
             await RepeatingTimer.StartTimer(); // hydrate reminder every 30min
 
-            await _client.SetGameAsync("DuckyBot | !help", "https://www.twitch.tv/trainwreckstv", StreamType.NotStreaming); // set the bots "Playing" status
+            await _client.SetGameAsync("DuckyBot | !help"); // set the bots "Playing" status
             await _client.SetStatusAsync(UserStatus.Online); // set the bots online status
 
             //CUSTOM EVENT HANDLERS
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _client.MessageReceived += General.Gay;
             _client.MessageReceived += General.Cummo;
-            _client.MessageReceived += General.TriHard;
+            //_client.MessageReceived += General.TriHard; removed ... controversial.
             _client.MessageReceived += General.WhoDidThis;
             _client.MessageReceived += General.HempusJibberish;
             _client.MessageReceived += General.GoodBot;

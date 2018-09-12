@@ -88,8 +88,7 @@ namespace DuckyBot.Core.Modules.Commands
             temp = message.ToLower();
 
             string replaceR = Regex.Replace(temp, @"r", "w");
-            string replaceV = Regex.Replace(replaceR, @"v", "v"); // dont replace v
-            string replaceL = Regex.Replace(replaceV, @"l", "w");
+            string replaceL = Regex.Replace(replaceR, @"l", "w");
             string replaceIS = Regex.Replace(replaceL, @"is", "ish");
             string replaceNE = Regex.Replace(replaceIS, @"ne", "nye");
             string replaceNU = Regex.Replace(replaceNE, @"nu", "nyu");

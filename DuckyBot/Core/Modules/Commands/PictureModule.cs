@@ -201,7 +201,7 @@ namespace DuckyBot.Core.Modules.Commands
         [Command("aesthetic")]
         [Alias("a", "outrun")]
         [Summary("Posts random ＡＥＳＴＨＥＴＩＣ　ワネヘ pictures")] // command summary
-        public async Task Gete()
+        public async Task Aesthetic()
         {
             bool post = true; // Post default to true
             do
@@ -224,6 +224,43 @@ namespace DuckyBot.Core.Modules.Commands
                     {
                         footer
                         .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/VaporwaveAesthetics") // footer data, "Requested by [name] at [time] | from [place]
+                        .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
+                    });
+                    var final = embed.Build(); // final = constructed embedded message
+                    await Context.Channel.SendMessageAsync("", false, final); // post embedded message
+                }
+                else // if its not an image (youtube video, etc)
+                {
+                    post = false; // do not post it
+                }
+            } while (post == false); // Loop until its an image
+        }
+        [Command("gamer")]
+        [Alias("g", "gamersriseup", "veronica")]
+        [Summary("We live in a society")] // command summary
+        public async Task GamersRiseUp()
+        {
+            bool post = true; // Post default to true
+            do
+            {
+                string weblink = "https://www.reddit.com/r/GamersRiseUp/random/.json"; // api link
+                string json = ""; //default json to ""
+                var httpClient = new HttpClient(); //This acts like a web browser
+                json = await httpClient.GetStringAsync(weblink); // set json to api string
+
+                var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
+                string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
+
+                if (image.Contains(".jpg") || image.Contains(".png") || image.Contains(".gif")) // if its an image
+                {
+                    post = true; //post it
+                    var embed = new EmbedBuilder(); // Create new embedded message
+                    embed.WithImageUrl(ApiHelper.GetRedirectUrl(image)); // embed the image within the message
+                    embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
+                    embed.WithFooter(footer => // embedded message footer builder
+                    {
+                        footer
+                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/GamersRiseUp") // footer data, "Requested by [name] at [time] | from [place]
                         .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
                     var final = embed.Build(); // final = constructed embedded message
