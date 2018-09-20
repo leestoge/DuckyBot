@@ -91,6 +91,8 @@ namespace DuckyBot.Core.Modules.Commands
                 "https://youtu.be/j2aPWI9ChtM",
                 "https://youtu.be/y_lActFE-sw",
                 "https://youtu.be/iKR7anoXsqg",
+                "https://clips.twitch.tv/ShyGleamingWormUnSane",
+                "https://clips.twitch.tv/KitschyElegantLocustBIRB",
             }; // array of strings called "vids" that holds the video links
             int rand = StaticRandom.Instance.Next(vids.Length); // get random number between 0 and array length
             string vidtopost = vids[rand]; // store string at the random number position in the array
