@@ -22,38 +22,28 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("Posts a random picture :camera_with_flash:")] // command summary
         public async Task Picture() // command async task (method basically)
         {
-            bool post = true; // Post default to true
-            do
+            var dirInfo = Directory.EnumerateFiles("Pictures/").ToList();
+            int randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count()); // get random number between 0 and list length
+            var randomFilePathString = dirInfo[randomIndex];
+
+            await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
+
+            if (randomFilePathString == "Pictures/hoora.jpg") // under certain conditions will post a message alongisde a picture
             {
-                var dirInfo = Directory.EnumerateFiles("Pictures/").ToList();
-                int randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count()); // get random number between 0 and list length
-                var randomFilePathString = dirInfo[randomIndex];
-
-                if (randomFilePathString == "Pictures/PUBG.png" || randomFilePathString == "Pictures/TriHard.png")
-                {
-                    post = false;
-                    return;
-                }
-
-                await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
-
-                if (randomFilePathString == "Pictures/hoora.jpg") // under certain conditions will post a message alongisde a picture
-                {
-                    await Context.Channel.SendMessageAsync("ALL HAIL COMMANDER DUCKY. THOSE WHO OPPOSE M'LORD SHALL PERISH! HOORA HOORA HOORA...");
-                }
-                if (randomFilePathString == "Pictures/dragon.jpg")
-                {
-                    await Context.Channel.SendMessageAsync("Dracarys! 🔥🔥🔥🔥🔥🔥🔥🔥");
-                }
-                if (randomFilePathString == "Pictures/ult.png")
-                {
-                    await Context.Channel.SendMessageAsync("ryū ga waga teki wo kurau!");
-                }
-                if (randomFilePathString == "Pictures/tomape.png")
-                {
-                    await Context.Channel.SendMessageAsync("ook ook");
-                }
-            } while (post == false);
+                await Context.Channel.SendMessageAsync("ALL HAIL COMMANDER DUCKY. THOSE WHO OPPOSE M'LORD SHALL PERISH! HOORA HOORA HOORA...");
+            }
+            if (randomFilePathString == "Pictures/dragon.jpg")
+            {
+                await Context.Channel.SendMessageAsync("Dracarys! 🔥🔥🔥🔥🔥🔥🔥🔥");
+            }
+            if (randomFilePathString == "Pictures/ult.png")
+            {
+                await Context.Channel.SendMessageAsync("ryū ga waga teki wo kurau!");
+            }
+            if (randomFilePathString == "Pictures/tomape.png")
+            {
+                await Context.Channel.SendMessageAsync("ook ook");
+            }
         }
         [Command("corona")] // Command declaration
         [Alias("Corona")] // command aliases (also trigger task)
@@ -134,7 +124,7 @@ namespace DuckyBot.Core.Modules.Commands
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
 
-                if (image.Contains(".jpg") || image.Contains(".png") || image.Contains(".gif")) // if its an image
+                if (image.EndsWith(".jpg") || image.EndsWith(".png") || image.EndsWith(".gif")) // if its an image
                 {
                     post = true; //post it
                     var embed = new EmbedBuilder(); // Create new embedded message
@@ -148,6 +138,10 @@ namespace DuckyBot.Core.Modules.Commands
                     });
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
+                }
+                else if (image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
+                {
+                    post = false; // do not post it
                 }
                 else // if its not an image (youtube video, etc)
                 {
@@ -174,7 +168,7 @@ namespace DuckyBot.Core.Modules.Commands
 
                     string DogImage = json["url"].ToString(); // Saves the detected url to DogImage string (with "url" identifier prefix)
 
-                    if (DogImage.Contains("mp4")) // check if our DogImage string contains an .mp4 extension
+                    if (DogImage.Contains("mp4") || DogImage.EndsWith(".gifv")) // check if our DogImage string contains an .mp4 or .gifv extension
                     {
                         post = false; // Do not post if this is the case (They don't display properly in Discord within the embed)
                     }
@@ -214,7 +208,7 @@ namespace DuckyBot.Core.Modules.Commands
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
 
-                if (image.Contains(".jpg") || image.Contains(".png") || image.Contains(".gif")) // if its an image
+                if (image.EndsWith(".jpg") || image.EndsWith(".png") || image.EndsWith(".gif")) // if its an image
                 {
                     post = true; //post it
                     var embed = new EmbedBuilder(); // Create new embedded message
@@ -228,6 +222,10 @@ namespace DuckyBot.Core.Modules.Commands
                     });
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
+                }
+                else if (image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
+                {
+                    post = false; // do not post it
                 }
                 else // if its not an image (youtube video, etc)
                 {
@@ -251,7 +249,7 @@ namespace DuckyBot.Core.Modules.Commands
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
 
-                if (image.Contains(".jpg") || image.Contains(".png") || image.Contains(".gif")) // if its an image
+                if (image.EndsWith(".jpg") || image.EndsWith(".png") || image.EndsWith(".gif")) // if its an image
                 {
                     post = true; //post it
                     var embed = new EmbedBuilder(); // Create new embedded message
@@ -265,6 +263,10 @@ namespace DuckyBot.Core.Modules.Commands
                     });
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
+                }
+                else if (image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
+                {
+                    post = false; // do not post it
                 }
                 else // if its not an image (youtube video, etc)
                 {
@@ -288,7 +290,7 @@ namespace DuckyBot.Core.Modules.Commands
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
 
-                if (image.Contains(".gif")) // if its a gif
+                if (image.EndsWith(".gif")) // if its a gif
                 {
                     post = true; //post it
                     var embed = new EmbedBuilder(); // Create new embedded message
@@ -302,6 +304,10 @@ namespace DuckyBot.Core.Modules.Commands
                     });
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
+                }
+                else if(image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
+                {
+                    post = false; // do not post it
                 }
                 else // if its not a gif
                 {
