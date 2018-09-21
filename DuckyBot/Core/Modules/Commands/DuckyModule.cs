@@ -39,10 +39,18 @@ namespace DuckyBot.Core.Modules.Commands
         [RequireUserPermission(GuildPermission.Administrator)] ///Needed User Permissions ///
         public async Task addQuote([Remainder] string quote) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
+            string path = @"F:\Visual Studio\Projects\DuckyBot\DuckyBot\Resources\DuckyQuotes.txt"; // would have to be manually set up as it currently is
+
+            // should probably add something here to check for the above path, and create it if its not found.
+
             //DuckyQuotes.Add(quote); // Add the parameter (quote) to the !ducky command list - self implemented strings currently lost upon bot process ending, must be added manually during downtime.
             using (StreamWriter TextEditor = File.AppendText("Resources/DuckyQuotes.txt"))
             {
                 await TextEditor.WriteLineAsync(quote);
+            }
+            using (StreamWriter TextEditor = File.AppendText(path))
+            {
+                TextEditor.WriteLine(quote);
             }
             Console.WriteLine($"{DateTime.Now.ToString("t")}: Sucessfully added {quote} to !ducky"); // Notify me in console the time that this happened
             await Context.Channel.SendMessageAsync("Sucessfully added '**" + quote + "**'  to the `!ducky` command.");  // Notify user their parameter has been sucessfully added.

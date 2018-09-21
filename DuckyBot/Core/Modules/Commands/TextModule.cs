@@ -41,8 +41,16 @@ namespace DuckyBot.Core.Modules.Commands
         [RequireUserPermission(GuildPermission.Administrator)] ///Needed User Permissions ///
         public async Task addQuote([Remainder] string quote) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
+            string path = @"F:\Visual Studio\Projects\DuckyBot\DuckyBot\Resources\TDPQuotes.txt"; // would have to be manually set up as it currently is
+
+            // should probably add something here to check for the above path, and create it if its not found.
+
             //TDPQuotes.Add(quote); // Add the parameter (quote) to the !ducky command list - implemented quotes currently lost upon bot process ending, must be added manually during downtime.
             using (StreamWriter TextEditor = File.AppendText("Resources/TDPQuotes.txt"))
+            {
+                TextEditor.WriteLine(quote);
+            }
+            using (StreamWriter TextEditor = File.AppendText(path))
             {
                 TextEditor.WriteLine(quote);
             }
