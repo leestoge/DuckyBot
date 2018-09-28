@@ -23,12 +23,12 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task Picture() // command async task (method basically)
         {
             var dirInfo = Directory.EnumerateFiles("Pictures/").ToList();
-            int randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count()); // get random number between 0 and list length
+            var randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
             var randomFilePathString = dirInfo[randomIndex];
 
             await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
 
-            if (randomFilePathString == "Pictures/hoora.jpg") // under certain conditions will post a message alongisde a picture
+            if (randomFilePathString == "Pictures/hoora.jpg") // under certain conditions will post a message alongside a picture
             {
                 await Context.Channel.SendMessageAsync("ALL HAIL COMMANDER DUCKY. THOSE WHO OPPOSE M'LORD SHALL PERISH! HOORA HOORA HOORA...");
             }
@@ -61,7 +61,7 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task CoffeePepe() // command async task (method basically)
         {        
             var dirInfo = Directory.EnumerateFiles("Pictures/coffee/").ToList();
-            int randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count()); // get random number between 0 and list length
+            int randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
             var randomFilePathString = dirInfo[randomIndex];
 
             await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
@@ -73,31 +73,29 @@ namespace DuckyBot.Core.Modules.Commands
         {
             if (x > 360 || x < 1) // if input parameter is greater than 360 (degrees) or less than 1
             {
-                await Context.Channel.SendMessageAsync("Something has went wrong! Stoge has been notified."); // tell user an error occured
+                await Context.Channel.SendMessageAsync("Something has went wrong! Stoge has been notified."); // tell user an error occurred
 
                 var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
                 var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
-                await z.SendMessageAsync($"{DateTime.Now.ToString("t")} **{Context.User.Username}** tried to rotate their avatar by `" + x + "` degrees."); // private message me with error reason (with time error occured)
+                await z.SendMessageAsync($"{DateTime.Now.ToString("t")} **{Context.User.Username}** tried to rotate their avatar by `" + x + "` degrees."); // private message me with error reason (with time error occurred)
             }
             else // if input parameter is < 360 degrees
             {
-                ImageSharp.Image<Rgba32> image = null; // create ImageSharp image instance and set it to null
-                HttpClient httpClient = new HttpClient(); // This acts like a web browser
-                HttpResponseMessage response = await httpClient.GetAsync(Context.User.GetAvatarUrl());  // get response from users avatar URL
-                Stream inputStream = await response.Content.ReadAsStreamAsync(); // input users avatar URL into ImageSharp to be parsed
-                image = ImageSharp.Image.Load(inputStream); // load the parsed URL (image)
+                var httpClient = new HttpClient(); // This acts like a web browser
+                var response = await httpClient.GetAsync(Context.User.GetAvatarUrl());  // get response from users avatar URL
+                var inputStream = await response.Content.ReadAsStreamAsync(); // input users avatar URL into ImageSharp to be parsed
+                var image = ImageSharp.Image.Load(inputStream);
                 image.Rotate(x); // rotate the image by the input parameter amount
 
                 Stream outStream = new MemoryStream(); // store the rotated image as "outStream"
                 image.SaveAsPng(outStream); // save the rotated image
                 outStream.Position = 0;
-                string input = "abcdefghijklmnopqrstuvwxyz0123456789"; // random letters/numbers for naming convention for temporary saves
-                char ch; // new char variable
-                string randomString = ""; // string "randomString" to save generated naming convention
-                int rand = StaticRandom.Instance.Next(0, input.Length); // get random number between 0 and input string length
-                for (int i = 0; i < 8; i++) // loop 8 times to generate an 8 character long random naming convention for temporary saves
+                const string input = "abcdefghijklmnopqrstuvwxyz0123456789"; // random letters/numbers for naming convention for temporary saves
+                var randomString = ""; // string "randomString" to save generated naming convention
+                var rand = StaticRandom.Instance.Next(0, input.Length); // get random number between 0 and input string length
+                for (var i = 0; i < 8; i++) // loop 8 times to generate an 8 character long random naming convention for temporary saves
                 {
-                    ch = input[rand]; // set char variable to be randomly assigned characters from the input string
+                    var ch = input[rand]; // new char variable
                     randomString += ch; // string "randomString" to be assigned a new char result 8 times, resulting in a randomly generated name consisting of 8 characters
                 }
                 var file = File.Create($"Pictures/{randomString}.png"); // create the file with the "randomString" naming convention
@@ -113,15 +111,14 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("Posts random cat pictures :cat:")] // command summary
         public async Task Cat()
         {
-            bool post = true; // Post default to true
+            bool post; // Post default to true
             do
             {
-                string weblink = "https://www.reddit.com/r/MEOW_IRL/random/.json"; // api link
-                string json = ""; //default json to ""
+                const string weblink = "https://www.reddit.com/r/catpictures/random/.json"; // api link
                 var httpClient = new HttpClient(); //This acts like a web browser
-                json = await httpClient.GetStringAsync(weblink); // set json to api string
+                var json = await httpClient.GetStringAsync(weblink);
 
-                var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
+                var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // de-serialise json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
 
                 if (image.EndsWith(".jpg") || image.EndsWith(".png") || image.EndsWith(".gif")) // if its an image
@@ -133,7 +130,7 @@ namespace DuckyBot.Core.Modules.Commands
                     embed.WithFooter(footer => // embedded message footer builder
                     {
                         footer
-                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/MEOW_IRL") // footer data, "Requested by [name] at [time] | from [place]
+                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/catpictures") // footer data, "Requested by [name] at [time] | from [place]
                         .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
                     var final = embed.Build(); // final = constructed embedded message
@@ -154,7 +151,7 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("Posts random dog pictures :dog:")] // command summary
         public async Task Dog() // command async task (method basically)
         {
-            bool post = true; // Post default to true
+            bool post; // Post default to true
             do
             {
                 using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
