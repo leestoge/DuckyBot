@@ -9,7 +9,7 @@ namespace DuckyBot.Core.LevelingSystem.UserAccounts
         public uint XP { get; set; } // unsigned integer (doesnt go below 0) getter/setter for user XP
         // XP is the same throughout all servers the bot can collect it in. - user will gain XP in ANY server/channel the bot is also in.
 
-        public uint LevelNumber // unsigned integer (doesnt go below 0)
+        public uint LevelNumber // unsigned integer (doesn't go below 0)
         {
             get
             {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using DuckyBot.Core.Modules.Events.MessageReceived;
 using Discord.Commands;
 using System.Reflection;
-using DuckyBot.Core.LevelingSystem;
+// using DuckyBot.Core.LevelingSystem;
 using System.Collections.Generic;
 using System.Linq;
 using DuckyBot.Core.Utilities;
@@ -17,12 +17,12 @@ namespace DuckyBot.Core.Main
         private DiscordSocketClient _client; // discord client
         private CommandService _commands;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         => new Program().StartAsync().GetAwaiter().GetResult(); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/i4qkIkaF7Yk */
 
-        public async Task StartAsync() // Works as main as Discord operates asyncronously
+        public async Task StartAsync() // Works as main as Discord operates asynchronously
         {
-            if (Config.bot.token == "" || Config.bot.token == null)
+            if (string.IsNullOrEmpty(Config.Bot.Token))
             {
                 Console.WriteLine("Bot token not found.");
                 Console.ReadKey();
@@ -39,7 +39,7 @@ namespace DuckyBot.Core.Main
             _commands = new CommandService(new CommandServiceConfig
             {
                 CaseSensitiveCommands = false, // CaSe SeNsItIvE
-                DefaultRunMode = RunMode.Async, // runmode asynchronous
+                DefaultRunMode = RunMode.Async, // run-mode asynchronous
                 LogLevel = LogSeverity.Debug               
             });
 
@@ -53,42 +53,42 @@ namespace DuckyBot.Core.Main
 
             _client.MessageDeleted += MessageDeleted;
 
-            _client.Log += Log; // lets bot know where to post log entires
+            _client.Log += Log; // lets bot know where to post log entries
 
-            await _client.LoginAsync(TokenType.Bot, Config.bot.token); // logs the bot in with a bot token, and utilises the config json file to obtain the token
+            await _client.LoginAsync(TokenType.Bot, Config.Bot.Token); // logs the bot in with a bot token, and utilizes the config json file to obtain the token
             await _client.StartAsync(); // start up bot
 
             Global.Client = _client;
             await Task.Delay(-1); // wait until the operation ends (never unless closed)
         }
 
-        private async Task HandleCommand(SocketMessage MessageParameter)
+        private async Task HandleCommand(SocketMessage messageParameter)
         {
-            var Message = MessageParameter as SocketUserMessage;
-            var Context = new SocketCommandContext(_client, Message);
+            var message = messageParameter as SocketUserMessage;
+            var context = new SocketCommandContext(_client, message);
 
-            if (Context.Message == null || Context.Message.Content == "") return;
-            if (Context.User.IsBot) return;
+            if (context.Message == null || context.Message.Content == "") return;
+            if (context.User.IsBot) return;
 
-            int ArgPos = 0;
+            var argPos = 0;
 
-            if (!(Message.HasStringPrefix("!", ref ArgPos) || Message.HasMentionPrefix(_client.CurrentUser, ref ArgPos))) return;
+            if (!(message.HasStringPrefix("!", ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 
-            var Result = await _commands.ExecuteAsync(Context, ArgPos);
+            var result = await _commands.ExecuteAsync(context, argPos);
 
-            if (!Result.IsSuccess && Result.Error != CommandError.UnknownCommand) // If not successful, reply with an error. - Filters out unknown command error as mistyped commands happen frequently.
+            if (!result.IsSuccess && result.Error != CommandError.UnknownCommand) // If not successful, reply with an error. - Filters out unknown command error as mistyped commands happen frequently.
             {
                 //await context.Channel.SendMessageAsync("Something has went wrong! Stoge has been notified."); // Tell user an error occured
-                Console.WriteLine($"[{DateTime.UtcNow.ToString("t")} [Commands] {Context.Message.Author.Username}: {Context.Message.Content} | Error: {Result.ErrorReason}");
-                var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
+                Console.WriteLine($"[{DateTime.UtcNow.ToString("t")} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}");
+                var application = await context.Client.GetApplicationInfoAsync(); // gets channels from discord client
                 var z = await application.Owner.GetOrCreateDMChannelAsync(); // find dm channel to private message me
-                await z.SendMessageAsync($"[{DateTime.UtcNow.ToString("t")} [Commands] {Context.Message.Author.Username}: {Context.Message.Content} | Error: {Result.ErrorReason}"); // private message me with exact error reason
+                await z.SendMessageAsync($"[{DateTime.UtcNow.ToString("t")} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}"); // private message me with exact error reason
             }
 
             // Leveling up related
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            // Leveling.UserSentMessage((SocketGuildUser)Context.User, (SocketTextChannel)Context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
+            // Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
             // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -141,11 +141,10 @@ namespace DuckyBot.Core.Main
                 Console.WriteLine("Your message:");
                 msg = Console.ReadLine();
             }
-
             await textChannel.SendMessageAsync(msg);
         }
 
-        private SocketTextChannel GetSelectedTextChannel(IEnumerable<SocketTextChannel> channels)
+        private static SocketTextChannel GetSelectedTextChannel(IEnumerable<SocketTextChannel> channels)
         {
             var textChannels = channels.ToList();
             var maxIndex = textChannels.Count - 1;
@@ -164,11 +163,10 @@ namespace DuckyBot.Core.Main
                     selectedIndex = -1;
                 }
             }
-
             return textChannels[selectedIndex];
         }
 
-        private SocketGuild GetSelectedGuild(IEnumerable<SocketGuild> guilds)
+        private static SocketGuild GetSelectedGuild(IEnumerable<SocketGuild> guilds)
         {
             var socketGuilds = guilds.ToList();
             var maxIndex = socketGuilds.Count - 1;
@@ -191,7 +189,7 @@ namespace DuckyBot.Core.Main
             return socketGuilds[selectedIndex];
         }
 
-        private async Task MessageDeleted(Cacheable<IMessage, ulong> msgCache, ISocketMessageChannel ContextChannel)
+        private static async Task MessageDeleted(Cacheable<IMessage, ulong> msgCache, ISocketMessageChannel ContextChannel)
         {
             var msg = await msgCache.GetOrDownloadAsync();
             if (msg.Author.Username == "DuckyBot") return;
@@ -199,7 +197,7 @@ namespace DuckyBot.Core.Main
             Console.WriteLine($"{DateTime.Now.ToString("t")} [Discord] {msg.Author.Username}: {msg.Content} (DELETED)");
         }
 
-        private async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel ContextChannel)
+        private async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel contextChannel)
         {
             var msgBeforeUpdate = await cachedMsgBeforeUpdate.GetOrDownloadAsync();
             if (msgBeforeUpdate.Author.Username == "DuckyBot") return;
@@ -230,7 +228,7 @@ namespace DuckyBot.Core.Main
                     Console.ForegroundColor = ConsoleColor.Green;
                     break;
             }
-            Console.Title = "DuckyBot's Log";
+            Console.Title = "DuckyBot Log";
             Console.WriteLine($"{DateTime.Now.ToString("t")} [{msg.Severity}] {msg.Source}: {msg.Message}"); // time, color, author, message
         }
     }
