@@ -17,7 +17,7 @@ namespace DuckyBot.Core.Main
         private DiscordSocketClient _client; // discord client
         private CommandService _commands;
 
-        private static void Main(string[] args)
+        private static void Main()
         => new Program().StartAsync().GetAwaiter().GetResult(); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/i4qkIkaF7Yk */
 
         public async Task StartAsync() // Works as main as Discord operates asynchronously
@@ -55,7 +55,7 @@ namespace DuckyBot.Core.Main
 
             _client.Log += Log; // lets bot know where to post log entries
 
-            await _client.LoginAsync(TokenType.Bot, Config.Bot.Token); // logs the bot in with a bot token, and utilizes the config json file to obtain the token
+            await _client.LoginAsync(TokenType.Bot, Config.Bot.Token); // logs the bot in with a bot token, and utilises the config json file to obtain the token
             await _client.StartAsync(); // start up bot
 
             Global.Client = _client;
@@ -76,13 +76,13 @@ namespace DuckyBot.Core.Main
 
             var result = await _commands.ExecuteAsync(context, argPos);
 
-            if (!result.IsSuccess && result.Error != CommandError.UnknownCommand) // If not successful, reply with an error. - Filters out unknown command error as mistyped commands happen frequently.
+            if (!result.IsSuccess && result.Error != CommandError.UnknownCommand) // If not successful, reply with an error. - Filters out unknown command error as mis-typed commands happen frequently.
             {
                 //await context.Channel.SendMessageAsync("Something has went wrong! Stoge has been notified."); // Tell user an error occured
-                Console.WriteLine($"[{DateTime.UtcNow.ToString("t")} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}");
+                Console.WriteLine($"[{DateTime.UtcNow:t} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}");
                 var application = await context.Client.GetApplicationInfoAsync(); // gets channels from discord client
                 var z = await application.Owner.GetOrCreateDMChannelAsync(); // find dm channel to private message me
-                await z.SendMessageAsync($"[{DateTime.UtcNow.ToString("t")} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}"); // private message me with exact error reason
+                await z.SendMessageAsync($"[{DateTime.UtcNow:t} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}"); // private message me with exact error reason
             }
 
             // Leveling up related
@@ -113,7 +113,7 @@ namespace DuckyBot.Core.Main
             _client.MessageReceived += General.BadBot;
             _client.MessageReceived += Whiskers.GiveFeels;
             _client.MessageReceived += Ducky.GiveKisses;
-            _client.MessageReceived += trucks.GiveDonut;
+            _client.MessageReceived += Trucks.GiveDonut;
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             ConsoleInput();
@@ -194,18 +194,18 @@ namespace DuckyBot.Core.Main
             var msg = await msgCache.GetOrDownloadAsync();
             if (msg.Author.Username == "DuckyBot") return;
 
-            Console.WriteLine($"{DateTime.Now.ToString("t")} [Discord] {msg.Author.Username}: {msg.Content} (DELETED)");
+            Console.WriteLine($"{DateTime.Now:t} [Discord] {msg.Author.Username}: {msg.Content} (DELETED)");
         }
 
-        private async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel contextChannel)
+        private static async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel contextChannel)
         {
             var msgBeforeUpdate = await cachedMsgBeforeUpdate.GetOrDownloadAsync();
             if (msgBeforeUpdate.Author.Username == "DuckyBot") return;
 
-            Console.WriteLine($"{DateTime.Now.ToString("t")} [Discord] {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} | {msgBeforeUpdate.Author.Username}: {editedMsg.Content} (EDITED)");
+            Console.WriteLine($"{DateTime.Now:t} [Discord] {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} | {msgBeforeUpdate.Author.Username}: {editedMsg.Content} (EDITED)");
         }       
 
-        private async Task Log(LogMessage msg) //log message argument
+        private static async Task Log(LogMessage msg) //log message argument
         {
             switch (msg.Severity)
             {
@@ -227,9 +227,11 @@ namespace DuckyBot.Core.Main
                 case LogSeverity.Debug:
                     Console.ForegroundColor = ConsoleColor.Green;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             Console.Title = "DuckyBot Log";
-            Console.WriteLine($"{DateTime.Now.ToString("t")} [{msg.Severity}] {msg.Source}: {msg.Message}"); // time, color, author, message
+            Console.WriteLine($"{DateTime.Now:t} [{msg.Severity}] {msg.Source}: {msg.Message}"); // time, color, author, message
         }
     }
 }

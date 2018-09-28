@@ -18,13 +18,11 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                 if (message.Contains("girl") || message.Contains("girlfriend") || message.Contains("wife") || message.Contains("gf") || message.Contains("woman") || message.Contains("women") || message.Contains("married") || message.Contains("marry") || message.Contains("marrying"))
                 {
                     var usermsg = arg as IUserMessage;
-                    Emote emote = Emote.Parse("<:feels:346348418702245888>");
+                    var emote = Emote.Parse("<:feels:346348418702245888>");
                     await Task.Delay(1500);
-                    await usermsg.AddReactionAsync(emote);
-                    return;
+                    if (usermsg != null) await usermsg.AddReactionAsync(emote);
                 }
             }
-            else return;
         }
     }
 }
