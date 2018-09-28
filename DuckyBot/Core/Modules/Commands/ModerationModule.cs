@@ -22,10 +22,10 @@ namespace DuckyBot.Core.Modules.Commands
                 await Context.Channel.SendMessageAsync($"You can only delete messages in a 1 - 5 range"); // notify user of message deletion rules
                 return;
             }
-            var messages = (await Context.Channel.GetMessagesAsync(y).Flatten()).Where(x => x.Author.Id == Context.Guild.CurrentUser.Id);
+            var messages = (await Context.Channel.GetMessagesAsync(y + 1).Flatten()).Where(x => x.Author.Id == Context.Guild.CurrentUser.Id);
             // get the amount of messages specified in parameter from the user ID of the bot - ensures only bot messages are deleted.
             await Context.Channel.DeleteMessagesAsync(messages); // delete the messages
-            await Context.Channel.SendMessageAsync($"Successfully deleted `" + y + "` DuckyBot messages."); // notify user of message deletion success
+            await Context.Channel.SendMessageAsync($"Successfully deleted `{y}` DuckyBot messages."); // notify user of message deletion success
         }
         [Command("Ban")] // Command declaration
         [Summary("Ban @Username :octagonal_sign: (Only Moderators can use this command)")] // command summary
