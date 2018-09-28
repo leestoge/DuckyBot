@@ -17,17 +17,10 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task Stats([Remainder] string arg = "") // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         // the arg parameter allows mentioning of another user in order to see their gained XP, not mentioning a user just provides your own XP.
         {
-            SocketUser target = null; // default the target user whos XP we are returning to null
+            SocketUser target; // default the target user whos XP we are returning to null
             var mentionedUser = Context.Message.MentionedUsers.FirstOrDefault(); // store the mentioned user (if there is one) as "mentionedUser"
 
-            if (mentionedUser == null) // if there is no mentioned user
-            {
-                target = Context.User; // target is set to the user using the command
-            }
-            else // if there is a mentioned user
-            {
-                target = mentionedUser; // target is set to the mentioned user
-            }
+            target = mentionedUser ?? Context.User;
             var account = UserAccounts.GetAccount(target); // get the users account info by passing in the obtained user ID
             await Context.Channel.SendMessageAsync($"{target.Mention} has {account.XP} XP!"); // reply mentioning the user and stating their current XP
             Console.WriteLine($"{DateTime.Now.ToString("t")} !stats executed successfully in " + Context.Guild.Name);
