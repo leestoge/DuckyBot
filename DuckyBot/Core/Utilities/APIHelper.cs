@@ -10,15 +10,14 @@ namespace DuckyBot.Core.Utilities
             if (string.IsNullOrWhiteSpace(url))
                 return url;
 
-            int maxRedirCount = 8;  // prevent infinite loops
-            string newUrl = url;
+            var maxRedirCount = 8;  // prevent infinite loops
+            var newUrl = url;
             do
             {
-                HttpWebRequest req = null;
                 HttpWebResponse resp = null;
                 try
                 {
-                    req = (HttpWebRequest)HttpWebRequest.Create(url);
+                    var req = (HttpWebRequest)WebRequest.Create(url);
                     req.Method = "HEAD";
                     req.AllowAutoRedirect = false;
                     resp = (HttpWebResponse)req.GetResponse();
@@ -34,10 +33,10 @@ namespace DuckyBot.Core.Utilities
                             if (newUrl == null)
                                 return url;
 
-                            if (newUrl.IndexOf("://", System.StringComparison.Ordinal) == -1)
+                            if (newUrl.IndexOf("://", StringComparison.Ordinal) == -1)
                             {
                                 // Doesn't have a URL Schema, meaning it's a relative or absolute URL
-                                Uri u = new Uri(new Uri(url), newUrl);
+                                var u = new Uri(new Uri(url), newUrl);
                                 newUrl = u.ToString();
                             }
                             break;
