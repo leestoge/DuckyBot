@@ -152,20 +152,20 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task Dog() // command async task (method basically)
         {
             bool post; // Post default to true
-            do
+            do // https://dog.ceo/dog-api/ another source
             {
                 using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
-                { //https://dog.ceo/dog-api/
-                    string websiteurl = "https://random.dog/woof.json"; // The API site
+                { 
+                    const string websiteurl = "https://random.dog/woof.json"; // The API site
                     client.BaseAddress = new Uri(websiteurl); // Redirects our acting web browser to the API site
-                    HttpResponseMessage response = client.GetAsync("").Result; // Verify connection to site
+                    var response = client.GetAsync("").Result; // Verify connection to site
                     response.EnsureSuccessStatusCode(); // Verify connection to site
-                    string result = await response.Content.ReadAsStringAsync(); // Gets full website information
+                    var result = await response.Content.ReadAsStringAsync(); // Gets full website information
                     var json = JObject.Parse(result); // Reads the json from the html
 
-                    string DogImage = json["url"].ToString(); // Saves the detected url to DogImage string (with "url" identifier prefix)
+                    var dogImage = json["url"].ToString(); // Saves the detected url to DogImage string (with "url" identifier prefix)
 
-                    if (DogImage.Contains("mp4") || DogImage.EndsWith(".gifv")) // check if our DogImage string contains an .mp4 or .gifv extension
+                    if (dogImage.Contains("mp4") || dogImage.EndsWith(".gifv")) // check if our DogImage string contains an .mp4 or .gifv extension
                     {
                         post = false; // Do not post if this is the case (They don't display properly in Discord within the embed)
                     }
@@ -176,45 +176,44 @@ namespace DuckyBot.Core.Modules.Commands
                         {
                             Color = new Color(255, 82, 41), // set embedded message trim colour to orange
                         };
-                        embed.WithImageUrl(ApiHelper.GetRedirectUrl(DogImage)); // place picture inside embedded message (ensures the picture is posted with no link shown)
+                        embed.WithImageUrl(ApiHelper.GetRedirectUrl(dogImage)); // place picture inside embedded message (ensures the picture is posted with no link shown)
                         embed.WithFooter(footer =>
                         {
                             footer
-                            .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: https://random.dog")
+                            .WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: https://random.dog")
                             .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64));
                         });
                         var final = embed.Build();
                         await ReplyAsync("", false,final); // Sends the the embedded message (picture)
                     }
                 }
-            } while (post == false); // Loop until DogImage doesnt have an .mp4 extension
+            } while (post == false); // Loop until DogImage doesn't have an .mp4 extension
         }
         [Command("aesthetic")]
         [Alias("a", "outrun")]
         [Summary("Posts random ＡＥＳＴＨＥＴＩＣ　ワネヘ pictures")] // command summary
         public async Task Aesthetic()
         {
-            bool post = true; // Post default to true
+            bool post; // Post default to true
             do
             {
-                string weblink = "https://www.reddit.com/r/VaporwaveAesthetics/random/.json"; // api link
-                string json = ""; //default json to ""
+                var weblink = "https://www.reddit.com/r/VaporwaveAesthetics/random/.json"; // api link
                 var httpClient = new HttpClient(); //This acts like a web browser
-                json = await httpClient.GetStringAsync(weblink); // set json to api string
+                var json = await httpClient.GetStringAsync(weblink);
 
-                var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
+                var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // de-serialise json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
 
                 if (image.EndsWith(".jpg") || image.EndsWith(".png") || image.EndsWith(".gif")) // if its an image
                 {
-                    post = true; //post it
+                    post = true; // post it
                     var embed = new EmbedBuilder(); // Create new embedded message
                     embed.WithImageUrl(ApiHelper.GetRedirectUrl(image)); // embed the image within the message
                     embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
                     embed.WithFooter(footer => // embedded message footer builder
                     {
                         footer
-                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/VaporwaveAesthetics") // footer data, "Requested by [name] at [time] | from [place]
+                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: r/VaporwaveAesthetics") // footer data, "Requested by [name] at [time] | from [place]
                         .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
                     var final = embed.Build(); // final = constructed embedded message
@@ -235,13 +234,12 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("We live in a society")] // command summary
         public async Task GamersRiseUp()
         {
-            bool post = true; // Post default to true
+            bool post; // Post default to true
             do
             {
-                string weblink = "https://www.reddit.com/r/GamersRiseUp/random/.json"; // api link
-                string json = ""; //default json to ""
+                var weblink = "https://www.reddit.com/r/GamersRiseUp/random/.json"; // api link
                 var httpClient = new HttpClient(); //This acts like a web browser
-                json = await httpClient.GetStringAsync(weblink); // set json to api string
+                var json = await httpClient.GetStringAsync(weblink);
 
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
@@ -255,7 +253,7 @@ namespace DuckyBot.Core.Modules.Commands
                     embed.WithFooter(footer => // embedded message footer builder
                     {
                         footer
-                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/GamersRiseUp") // footer data, "Requested by [name] at [time] | from [place]
+                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: r/GamersRiseUp") // footer data, "Requested by [name] at [time] | from [place]
                         .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
                     var final = embed.Build(); // final = constructed embedded message
@@ -276,13 +274,12 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("<:hempus:446374082481750017>")] // command summary
         public async Task Anime()
         {
-            bool post = true; // Post default to true
+            bool post; // Post default to true
             do
             {
-                string weblink = "https://www.reddit.com/r/animegifs/random/.json"; // api link
-                string json = ""; //default json to ""
+                var weblink = "https://www.reddit.com/r/animegifs/random/.json"; // api link
                 var httpClient = new HttpClient(); //This acts like a web browser
-                json = await httpClient.GetStringAsync(weblink); // set json to api string
+                var json = await httpClient.GetStringAsync(weblink);
 
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
@@ -296,7 +293,7 @@ namespace DuckyBot.Core.Modules.Commands
                     embed.WithFooter(footer => // embedded message footer builder
                     {
                         footer
-                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/animegifs") // footer data, "Requested by [name] at [time] | from [place]
+                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: r/animegifs") // footer data, "Requested by [name] at [time] | from [place]
                         .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
                     var final = embed.Build(); // final = constructed embedded message
@@ -317,13 +314,12 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("Post pictures of people who've just been fucked up fam :100:")] // command summary
         public async Task Fuckmeup()
         {
-            bool post = true; // Post default to true
+            var post = true; // Post default to true
             do
             {
-                string weblink = "https://www.reddit.com/r/Justfuckmyshitup/random/.json"; // api link
-                string json = ""; //default json to ""
+                var weblink = "https://www.reddit.com/r/Justfuckmyshitup/random/.json"; // api link
                 var httpClient = new HttpClient(); //This acts like a web browser
-                json = await httpClient.GetStringAsync(weblink); // set json to api string
+                var json = await httpClient.GetStringAsync(weblink);
 
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
@@ -345,7 +341,7 @@ namespace DuckyBot.Core.Modules.Commands
                     embed.WithFooter(footer =>
                     {
                         footer
-                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now.ToString("t")} | From: r/Justfuckmyshitup")
+                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: r/Justfuckmyshitup")
                         .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64));
                     });
                     var final = embed.Build();
@@ -355,7 +351,7 @@ namespace DuckyBot.Core.Modules.Commands
                 {
                     post = false;
                 }
-            } while (post == false); // Loop until DogImage doesnt have an .mp4 extension
+            } while (post == false); // Loop until DogImage doesn't have an .mp4 extension
         }
     }
 }
