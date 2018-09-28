@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DuckyBot.Core.Modules.Events.MessageReceived
 {
-    class Ducky : ModuleBase<SocketCommandContext> // Define module and direct to command handler
+    internal class Ducky : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     {
         public static async Task GiveKisses(SocketMessage arg)
         {
@@ -17,10 +17,8 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                 {
                     await Task.Delay(1500);
                     await arg.Channel.SendMessageAsync(arg.Author.Mention + " :kissing_closed_eyes: :kissing_closed_eyes: :kissing_closed_eyes: ");
-                    return;
                 }
             }
-            else return;
         }
     }
 }
