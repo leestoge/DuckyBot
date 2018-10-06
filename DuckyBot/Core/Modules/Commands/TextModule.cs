@@ -190,9 +190,9 @@ namespace DuckyBot.Core.Modules.Commands
                 else // if there is a mentioned user
                 {
                     var target = mentionedUser; // target is the mentioned user
-                    await Context.Channel.SendMessageAsync(target.Mention + " " + setup);
+                    await Context.Channel.SendMessageAsync($"{setup} {target.Mention}");
                     await Task.Delay(3000);
-                    await Context.Channel.SendMessageAsync(target.Mention + " " + punchline);
+                    await Context.Channel.SendMessageAsync($"{punchline} {target.Mention}");
                 }
             }
         }
