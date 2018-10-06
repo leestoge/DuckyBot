@@ -88,7 +88,7 @@ namespace DuckyBot.Core.Main
             // Leveling up related
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            // Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
+             // Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
             // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,7 +106,6 @@ namespace DuckyBot.Core.Main
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _client.MessageReceived += General.Gay;
             _client.MessageReceived += General.Cummo;
-            //_client.MessageReceived += General.TriHard; removed ... controversial.
             _client.MessageReceived += General.WhoDidThis;
             _client.MessageReceived += General.HempusJibberish;
             _client.MessageReceived += General.GoodBot;
