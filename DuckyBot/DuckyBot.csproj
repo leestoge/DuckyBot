@@ -6,15 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ImageSharp\**" />
-    <Compile Remove="Images\**" />
-    <EmbeddedResource Remove="ImageSharp\**" />
-    <EmbeddedResource Remove="Images\**" />
-    <None Remove="ImageSharp\**" />
-    <None Remove="Images\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Discord.Net" Version="1.0.2" />
     <PackageReference Include="Discord.Net.Core" Version="1.0.2" />
     <PackageReference Include="Discord.Net.Webhook" Version="1.0.2" />
