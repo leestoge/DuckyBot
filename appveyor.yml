@@ -1,0 +1,12 @@
+version: 1.0.{build}
+image: Visual Studio 2017 Preview
+skip_tags: true
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+build_script:
+  - dotnet build -c Release
+test_script:
+  - dotnet test DuckyBot.xUnit.Tests/DuckyBot.xUnit.Tests.csproj
