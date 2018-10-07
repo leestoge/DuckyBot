@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
 using DuckyBot.Core.Utilities;
-using ImageSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -65,46 +64,6 @@ namespace DuckyBot.Core.Modules.Commands
             var randomFilePathString = dirInfo[randomIndex];
 
             await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
-        }
-        [Command("rotate")] // Command declaration
-        [Summary("Rotate your discord avatar at an input angle :arrows_counterclockwise:")] // command summary
-        public async Task Rotate([Remainder] uint x) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
-        // parameter is a uint, meaning that it can only be a positive number
-        {
-            if (x > 360 || x < 1) // if input parameter is greater than 360 (degrees) or less than 1
-            {
-                await Context.Channel.SendMessageAsync("Something has went wrong! Stoge has been notified."); // tell user an error occurred
-
-                var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
-                var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
-                await z.SendMessageAsync($"{DateTime.Now.ToString("t")} **{Context.User.Username}** tried to rotate their avatar by `" + x + "` degrees."); // private message me with error reason (with time error occurred)
-            }
-            else // if input parameter is < 360 degrees
-            {
-                var httpClient = new HttpClient(); // This acts like a web browser
-                var response = await httpClient.GetAsync(Context.User.GetAvatarUrl());  // get response from users avatar URL
-                var inputStream = await response.Content.ReadAsStreamAsync(); // input users avatar URL into ImageSharp to be parsed
-                var image = ImageSharp.Image.Load(inputStream);
-                image.Rotate(x); // rotate the image by the input parameter amount
-
-                Stream outStream = new MemoryStream(); // store the rotated image as "outStream"
-                image.SaveAsPng(outStream); // save the rotated image
-                outStream.Position = 0;
-                const string input = "abcdefghijklmnopqrstuvwxyz0123456789"; // random letters/numbers for naming convention for temporary saves
-                var randomString = ""; // string "randomString" to save generated naming convention
-                var rand = StaticRandom.Instance.Next(0, input.Length); // get random number between 0 and input string length
-                for (var i = 0; i < 8; i++) // loop 8 times to generate an 8 character long random naming convention for temporary saves
-                {
-                    var ch = input[rand]; // new char variable
-                    randomString += ch; // string "randomString" to be assigned a new char result 8 times, resulting in a randomly generated name consisting of 8 characters
-                }
-                var file = File.Create($"Pictures/{randomString}.png"); // create the file with the "randomString" naming convention
-                await outStream.CopyToAsync(file); // copy the stored rotated image into the file
-                file.Dispose(); // release stream
-                await Context.Channel.SendFileAsync($"Pictures/{randomString}.png"); // post the image rotated by the set user amount
-                File.Delete($"Pictures/{randomString}.png"); // delete the image
-                Console.WriteLine($"{DateTime.Now.ToString("t")} !rotate executed successfully in " + Context.Guild.Name);
-            }
         }
         [Command("cat")] // Command declaration
         [Alias("cate", "kitty", "kitten")] // command aliases (also trigger task)
