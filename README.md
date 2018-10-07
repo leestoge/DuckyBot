@@ -1,4 +1,5 @@
 # DuckyBot 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/leestoge/DuckyBot/blob/master/LICENSE)
 ## A personal multi-purpose bot for [Discord](https://discordapp.com/ "Discord's Homepage") written in C# using the [Discord .NET library](https://github.com/RogueException/Discord.Net).
 <p align="center">
   <img src="https://i.imgur.com/QUihDfL.jpg" alt="DuckyBot's logo"/>
