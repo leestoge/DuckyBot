@@ -16,10 +16,17 @@ DuckyBot was initially inspired by a friend going by the alias "Ducky" who happe
 * Fitting reactions to user messages (under set conditions)
 * Dynamic text updating functionality
 * Ability to re-format/manipulate entered user text
-* Ability to manipulate the users avatar dynamically
 * Fully fledged turn based combat game for 2 users
 * Timer functionality
 * User levelling system
 * Advanced moderation capabilities
 
-I plan to add even more features and flesh out existing ones as time goes on, but as already stated; DuckyBot is only a hobby so any progress may take some time.
+I plan to add even more features and flesh out existing ones as time goes on, but DuckyBot is only a hobby so any progress may take some time.
+
+## Author
+
+* **Lee Sturrock** - *Developer* - [LeeStoge](https://github.com/leestoge)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
