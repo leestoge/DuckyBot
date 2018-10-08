@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using System.Linq;
+using Discord;
 using Discord.WebSocket;
 using System.Threading.Tasks;
 
@@ -8,15 +9,15 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
     {
         public static async Task Gay(SocketMessage msg)
         {
+            string[] gachiArray = { "deep dark fantasies", "come on college boy", "suction", "dungeon master", "my shoulder", "that turns me on", "boss of this gym", "slave get your ass back here", "get your ass back here", "boy next door", "take it boy" };
             if (msg.Author.IsBot) return; // make sure its not a bot account
-            var message = msg.ToString().ToLower();
+            var message = msg.ToString().ToLower(); // turn users message input to lowercase - less stressful to check with the array
             if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-            //string nospaces = Regex.Replace(message, @" ", "");
 
-            if (message.Contains("gay") || message.Contains("suction") || message.Contains("dungeon") && message.Contains("master") || message.Contains("my") && message.Contains("shoulder"))
+            if (gachiArray.Any(message.Contains)) // if any of the gachi words/phrases are detected
             {
                 var usermsg = msg as IUserMessage;
-                var emote = Emote.Parse("<:gachiGASM:448977978236600320>");
+                var emote = Emote.Parse("<:gachiGASM:448977978236600320>"); // react with gachiGASM
                 await Task.Delay(1500);
                 if (usermsg != null) await usermsg.AddReactionAsync(emote);
             }
@@ -26,9 +27,8 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
             if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-            //string nospaces = Regex.Replace(message, @" ", "");
 
-            if (message.Contains("who") && message.Contains("did") && message.Contains("this"))
+            if (message.Contains("who did this")) // if it contains all 3, highly unlikely to trigger randomly
             {
                 var usermsg = msg as IUserMessage;
                 var emote = new Emoji("😂");
@@ -41,9 +41,8 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
             if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-            //string nospaces = Regex.Replace(message, @" ", "");
 
-            if (message.Contains("good") && message.Contains("bot"))
+            if (message.StartsWith("good") && message.EndsWith("bot") || message.Contains("good bot"))
             {
                 await Task.Delay(1500);
                 await msg.Channel.SendMessageAsync("Good human.");
@@ -54,9 +53,8 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
             if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-            //string nospaces = Regex.Replace(message, @" ", "");
 
-            if (message.Contains("bad") && message.Contains("bot"))
+            if (message.StartsWith("bad") && message.EndsWith("bot") || message.Contains("bad bot"))
             {
                 await Task.Delay(1500);
                 await msg.Channel.SendMessageAsync("Bad human.");
@@ -66,7 +64,6 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         {
             if (msg.Author.IsBot) return; // make sure its not a bot account
             if (msg.Content.StartsWith("!") || msg.Content.StartsWith(":") || msg.Content.StartsWith("https://")) return; // make sure its not a command, emote or url link
-            //string nospaces = Regex.Replace(msg, @" ", "");
 
             if (msg.Content.Contains("Cd1 dde. FaZZXZÅ gjøre noe båttur og det var Nice i stuen og gå av når du spurte oss"))
             {
@@ -76,12 +73,12 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         }
         public static async Task Cummo(SocketMessage msg)
         {
+            string[] cummoArray = { "cummo", "sticky uh", "stiffy uh", "blicky uh", "iffy uh", "icky uh", "sticky uh", "gay gang", "blicky", "flicky", "flicky uh" };
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
             if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-            //string nospaces = Regex.Replace(message, @" ", "");
 
-            if (message.Contains("cummo") || message.Contains("sticky") && message.Contains("uh") || message.Contains("stiffy") && message.Contains("uh") || message.Contains("blicky") && message.Contains("uh"))
+            if (cummoArray.Any(message.Contains)) // if any of the cummo words/phrases are detected
             {
                 var usermsg = msg as IUserMessage;
                 var emote = Emote.Parse("<:CUMMO:428285290193616896>");
