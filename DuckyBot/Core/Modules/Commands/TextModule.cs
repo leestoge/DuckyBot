@@ -104,6 +104,34 @@ namespace DuckyBot.Core.Modules.Commands
             var final = replaceNo.ToLower();
             await Context.Channel.SendMessageAsync(final + " " + "<:hempus:446374082481750017>");
         }
+        [Command("Emoji")] // Command declaration
+        [Alias("emojify", "emote")] // command aliases (also trigger task)
+        [Summary("Converts user text into emoji")] // command summary
+        public async Task Emojify([Remainder] string message) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
+        {
+            string[] convertnumberArray = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" }; // array to convert numbers
+            var pattern = new Regex("^[a-zA-Z]*$", RegexOptions.Compiled); // a-z, A-Z pattern
+            message = message.ToLower(); // convert message parameter to lowercase
+            var convertedText = ""; // initialise converted text
+            foreach (char c in message) // for each character in the message
+                switch (c.ToString()) // convert character to string
+                {
+                    default:
+                        {
+                            if (pattern.IsMatch(c.ToString())) // if a-z, A-Z pattern matches any characters
+                            {
+                                convertedText += $":regional_indicator_{c}: "; // convert text to regional_indicator_{the character/pattern match corresponding letter}
+                            }
+                            else if (char.IsDigit(c)) // if the character is a digit
+                            {
+                                convertedText += $":{convertnumberArray[(int)char.GetNumericValue(c)]}:"; // compare to array
+                            }
+                            else convertedText += c;
+                            break;
+                        }
+                }
+            await ReplyAsync(convertedText); // reply converted text
+        }
         [Command("vaporwave")]
         [Alias("v")] // command aliases (also trigger task)
         [Summary("vaporwave text")] // command summary
