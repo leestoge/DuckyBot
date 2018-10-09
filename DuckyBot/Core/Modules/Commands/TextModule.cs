@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 using Discord;
-using Discord.WebSocket;
 using System.Linq;
 using System.Collections.Generic;
 using static DuckyBot.Core.Utilities.RandomGen;
