@@ -23,10 +23,19 @@ DuckyBot was initially inspired by a friend going by the alias "Ducky" who happe
 
 I plan to add even more features and flesh out existing ones as time goes on, but DuckyBot is only a hobby so any progress may take some time.
 
-## Author
+## Made possible by
 
-* **Lee Sturrock** - *Developer* - [LeeStoge](https://github.com/leestoge)
+* **Lee Sturrock** - *Developer*
+* **Michael Martin (Ducky)** - *Spawned the idea of DuckyBot/Ideas/Testing*
+* **TDP Community** - *Ideas/Testing*
+* **Family** - *Testing*
+* **Callum Bain** - *Ideas/Testing*
+* **Charles Thomas Merrick Bisset** - *Testing*
+* **StackOverflow** - *Help & Support*
+* **CodeForge** - *Help & Support*
+* **Discord API Discord Server** - *Help & Support*
+* **Discord-Bot-Tutorial Discord Server** - *Help & Support*
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/leestoge/DuckyBot/blob/master/LICENSE) file for details
