@@ -724,6 +724,13 @@ namespace DuckyBot.Core.Modules.Commands
                         if (Context.User.Mention != _player1) // if player 2's turn
                         {
                             _player2Apot = _player2Apot - 1; // take away 1 of player2's action potions
+
+                            if (_player2Apot < 0) // if player2 action potion count is less than 0 (they have none left)
+                            {// notify them they have no action potions left
+                                await ReplyAsync(Context.User.Mention + " You have no Action potions left!\n\n" + _whosTurn + " your turn!");
+                                _player2Apot = _player2Apot + 1; // counter act the negative so it wont go below 0.
+                                return;
+                            }
                             _player2Ap = _player2Ap + restoreValue; // player2 gains "restoreValue" amount of action points
 
                             _placeHolder = _whosTurn;
@@ -738,14 +745,16 @@ namespace DuckyBot.Core.Modules.Commands
                             {// notify them they have drank an action potion
                                 await ReplyAsync(Context.User.Mention + " Drank an Action potion and gained `" + restoreValue + " Action Points!`\n\n" + _player1 + " has " + _player1Hp + " health, " + _player1Ap + " action points, " + _player1Hpot + " Health potion and " + _player1Apot + " Action potion!\n" + _player2 + " has " + _player2Hp + " health, " + _player2Ap + " action points, " + _player2Hpot + " Health potion and " + _player2Apot + " Action potion!\n\n" + _whosTurn + " your turn!");
                             }
-                            if (_player2Apot < 0) // if player2 action potion count is less than 0 (they have none left)
-                            {// notify them they have no action potions left
-                                await ReplyAsync(Context.User.Mention + " You have no Action potions left!\n\n" + _whosTurn + " your turn!");
-                            }
                         }
                         else if (Context.User.Mention == _player1) // if player 1's turn
                         {
                             _player1Apot = _player1Apot - 1; // take away 1 of player1's action potions
+                            if (_player1Apot < 0) // if player1 action potion count is less than 0 (they have none left)
+                            {// notify them they have no action potions left
+                                await ReplyAsync(Context.User.Mention + " You have no Action potions left!\n\n" + _whosTurn + " your turn!");
+                                _player1Apot = _player1Apot + 1; // counter act the negative so it wont go below 0.
+                                return;
+                            }
                             _player1Ap = _player1Ap + restoreValue; // player1 gains "restoreValue" amount of action points
 
                             _placeHolder = _whosTurn;
@@ -759,10 +768,6 @@ namespace DuckyBot.Core.Modules.Commands
                             else // if player1 action potion count is 1 or more
                             {// notify them they have drank an action potion
                                 await ReplyAsync(Context.User.Mention + " Drank an Action potion and gained `" + restoreValue + " Action Points!`\n\n" + _player1 + " has " + _player1Hp + " health, " + _player1Ap + " action points, " + _player1Hpot + " Health potion and " + _player1Apot + " Action potion!\n" + _player2 + " has " + _player2Hp + " health, " + _player2Ap + " action points, " + _player2Hpot + " Health potion and " + _player2Apot + " Action potion!\n\n" + _whosTurn + " your turn!");
-                            }
-                            if (_player1Apot < 0) // if player1 action potion count is less than 0 (they have none left)
-                            {// notify them they have no action potions left
-                                await ReplyAsync(Context.User.Mention + " You have no Action potions left!\n\n" + _whosTurn + " your turn!");
                             }
                         }
                         else // if it's somehow neither players turn
@@ -802,44 +807,49 @@ namespace DuckyBot.Core.Modules.Commands
                         if (Context.User.Mention != _player1) // if player 2's turn
                         {
                             _player2Hpot = _player2Hpot - 1; // take away 1 of player2's health potions
+                            if (_player2Hpot < 0) // if player2 health potion count is less than 0 (they have none left)
+                            {// notify them they have no health potions left
+                                await ReplyAsync(Context.User.Mention + " You have no Health potions left!\n\n" + _whosTurn + " it's still your turn!");
+                                _player2Hpot = _player2Hpot + 1; // counter act the negative so it wont go below 0.
+                                return;
+                            }
                             _player2Hp = _player2Hp + restoreValue; // player2 gains "restoreValue" amount of health points
 
                             _placeHolder = _whosTurn;
                             _whosTurn = _whoWaits; // workout whos turn it is, setting the previous to placeholder - essentially swapping them around
                             _whoWaits = _placeHolder;
 
-                            if (_player2Hpot == 0) // if player2 action potion count equals 0
-                            {// notify them they used their last action potion
+                            if (_player2Hpot == 0) // if player2 health potion count equals 0
+                            {// notify them they used their last health potion
                                 await ReplyAsync(Context.User.Mention + " Just used their last Health Potion and restored `" + restoreValue + " Health Points!`\n\n" + _player1 + " has " + _player1Hp + " health, " + _player1Ap + " action points, " + _player1Hpot + " Health potion and " + _player1Apot + " Action potion!\n" + _player2 + " has " + _player2Hp + " health, " + _player2Ap + " action points, " + _player2Hpot + " Health potion and " + _player2Apot + " Action potion!\n\n" + _whosTurn + " your turn!");
                             }
-                            else // if player2 action potion count is 1 or more
-                            {// notify them they have drank an action potion
+                            else // if player2 health potion count is 1 or more
+                            {// notify them they have drank an health potion
                                 await ReplyAsync(Context.User.Mention + " Drank a Health potion and restored `" + restoreValue + " Health Points!`\n\n" + _player1 + " has " + _player1Hp + " health, " + _player1Ap + " action points, " + _player1Hpot + " Health potion and " + _player1Apot + " Action potion!\n" + _player2 + " has " + _player2Hp + " health, " + _player2Ap + " action points, " + _player2Hpot + " Health potion and " + _player2Apot + " Action potion!\n\n" + _whosTurn + " your turn!");
                             }
-                            if (_player2Hpot < 0) // if player2 action potion count is less than 0 (they have none left)
-                            {// notify them they have no action potions left
-                                await ReplyAsync(Context.User.Mention + " You have no Health potions left!\n\n" + _whosTurn + " your turn!");
-                            }
+
                         }
                         else if (Context.User.Mention == _player1) // if player 1's turn
                         {
-                            _player1Hpot = _player1Hpot - 1; // take away 1 of player1's action potions
-                            _player1Hp = _player1Hp + restoreValue; // player1 gains "restoreValue" amount of action points
+                            _player1Hpot = _player1Hpot - 1; // take away 1 of player1's health potions
+                            if (_player1Hpot < 0) // if player1 health potion count is less than 0 (they have none left)
+                            {// notify them they have no health potions left
+                                await ReplyAsync(Context.User.Mention + " You have no Health potions left!\n\n" + _whosTurn + " it's still your turn!");
+                                _player1Hpot = _player1Hpot + 1; // counter act the negative so it wont go below 0.
+                                return;
+                            }
+                            _player1Hp = _player1Hp + restoreValue; // player1 gains "restoreValue" amount of health points
 
                             _placeHolder = _whosTurn;
                             _whosTurn = _whoWaits; // workout whos turn it is, setting the previous to placeholder - essentially swapping them around
                             _whoWaits = _placeHolder;
-                            if (_player1Hpot == 0) // if player1 action potion count equals 0
-                            {// notify them they used their last action potion
+                            if (_player1Hpot == 0) // if player1 health potion count equals 0
+                            {// notify them they used their last health potion
                                 await ReplyAsync(Context.User.Mention + " Just used their last Health Potion and restored `" + restoreValue + " Health Points!`\n\n" + _player1 + " has " + _player1Hp + " health, " + _player1Ap + " action points, " + _player1Hpot + " Health potion and " + _player1Apot + " Action potion!\n" + _player2 + " has " + _player2Hp + " health, " + _player2Ap + " action points, " + _player2Hpot + " Health potion and " + _player2Apot + " Action potion!\n\n" + _whosTurn + " your turn!");
                             }
-                            else // if player1 action potion count is 1 or more
+                            else // if player1 health potion count is 1 or more
                             {
                                 await ReplyAsync(Context.User.Mention + " Drank a Health potion and restored `" + restoreValue + " Health Points!`\n\n" + _player1 + " has " + _player1Hp + " health, " + _player1Ap + " action points, " + _player1Hpot + " Health potion and " + _player1Apot + " Action potion!\n" + _player2 + " has " + _player2Hp + " health, " + _player2Ap + " action points, " + _player2Hpot + " Health potion and " + _player2Apot + " Action potion!\n\n" + _whosTurn + " your turn!");
-                            }
-                            if (_player1Hpot < 0) // if player1 action potion count is less than 0 (they have none left)
-                            {// notify them they have no action potions left
-                                await ReplyAsync(Context.User.Mention + " You have no Health potions left!\n\n" + _whosTurn + " your turn!");
                             }
                         }
                         else // if it's somehow neither players turn
