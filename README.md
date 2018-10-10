@@ -29,7 +29,7 @@ I plan to add even more features and flesh out existing ones as time goes on, bu
 * **Michael Martin (Ducky)** - *Spawned the idea of DuckyBot/Ideas/Testing*
 * **TDP Community** - *Ideas/Testing*
 * **Family** - *Testing*
-* **Callum Bain** - *Ideas/Testing*
+* **Calum Bain** - *Ideas/Testing*
 * **Charles Thomas Merrick Bisset** - *Testing*
 * **StackOverflow** - *Help & Support*
 * **CodeForge** - *Help & Support*
