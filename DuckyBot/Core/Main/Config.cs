@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DuckyBot.Core.Main
 {
-    internal class Config /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/i4qkIkaF7Yk */
+    internal static class Config /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/i4qkIkaF7Yk */
     {
         private const string ConfigFolder = "Resources"; // folder storing config file
         private const string ConfigFile = "config.json"; // config file

@@ -12,8 +12,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             if (arg.Author.Id == 98511845438009344) // if trucks types
             {
                 var message = arg.ToString().ToLower();
-                if (message.StartsWith("!") || message.StartsWith(":") && message.EndsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-                //string nospaces = Regex.Replace(message, @" ", "");
+                if (message.StartsWith("!") || message.StartsWith(":") && message.EndsWith(":") || message.StartsWith("https://"))
+                {
+                    return; // make sure its not a command, emote or url link
+                }
 
                 if (message.Contains("eat") || message.Contains("eating") || message.Contains("food") || message.Contains("donut") || message.Contains("doughnut")) // and it contains these phrases/words
                 {

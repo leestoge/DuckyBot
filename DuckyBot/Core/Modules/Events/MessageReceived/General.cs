@@ -12,7 +12,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             string[] gachiArray = { "deep dark fantasies", "come on college boy", "suction", "dungeon master", "my shoulder", "that turns me on", "boss of this gym", "slave get your ass back here", "get your ass back here", "boy next door", "take it boy" };
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower(); // turn users message input to lowercase - less stressful to check with the array
-            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
+            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
+            {
+                return; // make sure its not a command, emote or url link
+            }
 
             if (gachiArray.Any(message.Contains)) // if any of the gachi words/phrases are detected
             {
@@ -26,7 +29,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         {
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
-            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
+            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
+            {
+                return; // make sure its not a command, emote or url link
+            } 
 
             if (message.Contains("who did this")) // if it contains all 3, highly unlikely to trigger randomly
             {
@@ -40,7 +46,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         {
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
-            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
+            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
+            {
+                return; // make sure its not a command, emote or url link
+            }
 
             if (message.StartsWith("good") && message.EndsWith("bot") || message.Contains("good bot"))
             {
@@ -52,7 +61,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         {
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
-            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
+            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
+            {
+                return; // make sure its not a command, emote or url link
+            } 
 
             if (message.StartsWith("bad") && message.EndsWith("bot") || message.Contains("bad bot"))
             {
@@ -63,7 +75,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         public static async Task HempusJibberish(SocketMessage msg)
         {
             if (msg.Author.IsBot) return; // make sure its not a bot account
-            if (msg.Content.StartsWith("!") || msg.Content.StartsWith(":") || msg.Content.StartsWith("https://")) return; // make sure its not a command, emote or url link
+            if (msg.Content.StartsWith("!") || msg.Content.StartsWith(":") || msg.Content.StartsWith("https://"))
+            {
+                return; // make sure its not a command, emote or url link
+            }
 
             if (msg.Content.Contains("Cd1 dde. FaZZXZÅ gjøre noe båttur og det var Nice i stuen og gå av når du spurte oss"))
             {
@@ -76,7 +91,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             string[] cummoArray = { "cummo", "sticky uh", "stiffy uh", "blicky uh", "iffy uh", "icky uh", "sticky uh", "gay gang", "blicky", "flicky", "flicky uh" };
             if (msg.Author.IsBot) return; // make sure its not a bot account
             var message = msg.ToString().ToLower();
-            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
+            if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
+            {
+                return; // make sure its not a command, emote or url link
+            }
 
             if (cummoArray.Any(message.Contains)) // if any of the cummo words/phrases are detected
             {

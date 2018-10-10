@@ -72,7 +72,10 @@ namespace DuckyBot.Core.Main
 
             var argPos = 0;
 
-            if (!(message.HasStringPrefix("!", ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
+            if (!(message.HasStringPrefix("!", ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos)))
+            {
+                return;
+            }
 
             var result = await _commands.ExecuteAsync(context, argPos);
 

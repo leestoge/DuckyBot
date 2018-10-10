@@ -61,30 +61,6 @@ namespace DuckyBot.Core.Modules.Commands
             await dmChannel.SendMessageAsync("", false, builder.Build()); // then send embed to the user in the direct messages channel
             await Context.Channel.SendMessageAsync(Context.User.Mention + " Check your direct messages for a list of my commands! <:duckybot:378960915116064768> "); // reply to user in the channel they used the !help command to notify them of the direct message
         }
-        [Command("info")]
-        [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
-        [Summary("Gives general bot info. (Only Moderators can use this command)")]
-        public async Task BotInfo()
-        {
-            var application = await Context.Client.GetApplicationInfoAsync();
-            await ReplyAsync(
-                $"{Format.Bold("Info")}\n" +
-                $"- Author: {application.Owner.Username} (ID {application.Owner.Id})\n" +
-                $"- Library: Discord.Net ({DiscordConfig.Version})\n" +
-                $"- Run-time: {RuntimeInformation.FrameworkDescription} {RuntimeInformation.OSArchitecture}\n" +
-                $"- Up-time: {GetUptime()}\n\n" +
-
-                $"{Format.Bold("Stats")}\n" +
-                $"- Heap Size: {GetHeapSize()} MB\n" +
-                $"- Guilds: {Context.Client.Guilds.Count}\n" +
-                $"- Channels: {Context.Client.Guilds.Sum(g => g.Channels.Count)}" +
-                $"- Users: {Context.Client.Guilds.Sum(g => g.Users.Count)}"
-            );
-        }
-        private static string GetUptime()
-            => (DateTime.Now - Process.GetCurrentProcess().StartTime).ToString(@"dd\.hh\:mm\:ss");
-        private static string GetHeapSize() => Math.Round(GC.GetTotalMemory(true) / (1024.0 * 1024.0), 2).ToString();
-
         [Command("ServerInfo")]
         [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
         [Alias("sinfo", "servinfo")]

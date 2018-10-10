@@ -12,8 +12,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             if (arg.Author.Id == 193075985267163136) // if whiskers types
             {
                 var message = arg.ToString().ToLower();
-                if (message.StartsWith("!") || message.StartsWith(":") && message.EndsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
-                //string nospaces = Regex.Replace(message, @" ", "");
+                if (message.StartsWith("!") || message.StartsWith(":") && message.EndsWith(":") || message.StartsWith("https://"))
+                {
+                    return; // make sure its not a command, emote or url link
+                }
 
                 if (message.Contains("girl") || message.Contains("girlfriend") || message.Contains("wife") || message.Contains("gf") || message.Contains("woman") || message.Contains("women") || message.Contains("married") || message.Contains("marry") || message.Contains("marrying"))
                 {

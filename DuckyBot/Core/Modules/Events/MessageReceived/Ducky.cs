@@ -11,7 +11,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             if (arg.Author.Id == 98543769795723264) // if ducky types
             {
                 var message = arg.ToString();
-                if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://")) return; // make sure its not a command, emote or url link
+                if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
+                {
+                    return; // make sure its not a command, emote or url link
+                }
 
                 if (message.EndsWith(" xxx"))
                 {

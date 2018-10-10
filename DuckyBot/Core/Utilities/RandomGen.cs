@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace DuckyBot.Core.Utilities
 {
-    internal class RandomGen
+    internal static class RandomGen
     {
         public static class StaticRandom /* CODE TAKEN FROM STACKOVERFLOW, WRITTEN BY "Alessandro D'Andria" - https://stackoverflow.com/questions/19270507/correct-way-to-use-random-in-multithread-application */
         {

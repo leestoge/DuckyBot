@@ -218,7 +218,7 @@ namespace DuckyBot.Core.Modules.Commands
                 {
                     var target = mentionedUser; // target is the mentioned user
                     await Context.Channel.SendMessageAsync($"{setup} {target.Mention}");
-                    await Task.Delay(3000);
+                    await Task.Delay(3000).ConfigureAwait(false);
                     await Context.Channel.SendMessageAsync($"{punchline} {target.Mention}");
                 }
             }
