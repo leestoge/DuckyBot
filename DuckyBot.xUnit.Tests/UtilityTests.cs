@@ -6,7 +6,7 @@ namespace DuckyBot.xUnit.Tests
     public class UtilityTests
     {
         [Fact]
-        public void MyFirstTest()
+        public static void MyFirstTest()
         {
             const int expected = 5;
 

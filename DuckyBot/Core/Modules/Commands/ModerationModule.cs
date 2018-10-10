@@ -34,8 +34,15 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task BanAsync(SocketGuildUser user = null, [Remainder] string reason = null) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         // parameters take in a mentioned user (which defaults to null), then a reason for the banning process
         {
-            if (user == null) throw new ArgumentException("You must mention a user!"); // if no user mentioned, notify command user that they must mention a user to ban
-            if (string.IsNullOrWhiteSpace(reason)) throw new ArgumentException("You must provide a reason!"); // if no reason stated, notify command user that they must provide a ban reason
+            if (user == null)
+            {
+                throw new ArgumentException("You must mention a user!"); // if no user mentioned, notify command user that they must mention a user to ban
+            }
+
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                throw new ArgumentException("You must provide a reason!"); // if no reason stated, notify command user that they must provide a ban reason
+            }
 
             var gld = Context.Guild as SocketGuild; // store server in context (aka guild) as var gld
             var embed = new EmbedBuilder(); // create new embeded message //
@@ -55,8 +62,15 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task KickAsync(SocketGuildUser user, [Remainder] string reason) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         // parameters take in a mentioned user (which defaults to null), then a reason for the removing process
         {
-            if (user == null) throw new ArgumentException("You must mention a user!"); // if no user mentioned, notify command user that they must mention a user to ban
-            if (string.IsNullOrWhiteSpace(reason)) throw new ArgumentException("You must provide a reason!"); // if no reason stated, notify command user that they must provide a remove reason
+            if (user == null)
+            {
+                throw new ArgumentException("You must mention a user!"); // if no user mentioned, notify command user that they must mention a user to ban
+            }
+
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                throw new ArgumentException("You must provide a reason!"); // if no reason stated, notify command user that they must provide a remove reason
+            }
 
             var embed = new EmbedBuilder(); // create new embedded message //
             embed.WithColor(new Color(255, 82, 41)); // set embedded message colour to orange

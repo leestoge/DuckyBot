@@ -8,6 +8,7 @@ using System.Reflection;
 // using DuckyBot.Core.LevelingSystem;
 using System.Collections.Generic;
 using System.Linq;
+using DuckyBot.Core.LevelingSystem;
 using DuckyBot.Core.Utilities;
 
 namespace DuckyBot.Core.Main
@@ -91,7 +92,7 @@ namespace DuckyBot.Core.Main
             // Leveling up related
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-             // Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
+            await Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
             // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

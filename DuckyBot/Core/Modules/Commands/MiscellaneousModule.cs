@@ -31,7 +31,6 @@ namespace DuckyBot.Core.Modules.Commands
         {
             await Context.Client.SetGameAsync(game); // change bots playing status to the provided string parameter
             await Context.Channel.SendMessageAsync($"Successfully set my playing status to '**{game}**'"); // notify user in the text channel the command was used in
-            Console.WriteLine($"{DateTime.Now}: Game was changed to {game}"); // notify me in console log
         }
         [Command("idiot")] // Command declaration
         [Summary("@idiot idiot :drooling_face:")] // command summary
@@ -43,7 +42,7 @@ namespace DuckyBot.Core.Modules.Commands
             await ((IGuildUser) user).AddRoleAsync(role); // modify var users role
             await Context.Channel.SendMessageAsync(Context.User.Mention + " idiot"); // notify user in the text channel the command was used in
 
-            if (role is null) // If role not found
+            if (role == null) // If role not found
             {
                 await Context.Channel.SendMessageAsync("Cannot find role `Idiot`."); // notify user
             }
@@ -105,7 +104,6 @@ namespace DuckyBot.Core.Modules.Commands
                 var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
                 await z.SendMessageAsync($"[{DateTime.Now.ToString("t")}] `!flip` error: error establishing random number"); // private message me with error reason (with time error occured)
 
-                Console.WriteLine("!flip error: error establishing random number");
                 return;
             }
             await Context.Channel.SendMessageAsync(flipToSend);

@@ -16,7 +16,10 @@ namespace DuckyBot.Core.LevelingSystem
         //get all user accounts
         public static IEnumerable<UserAccount> LoadUserAccounts(string filePath) // return collection of user accounts, pass in where to load from
         {
-            if (!File.Exists(filePath)) return null; // if no file exists at the file path return null
+            if (!File.Exists(filePath))
+            {
+                return null; // if no file exists at the file path return null
+            }
             var json = File.ReadAllText(filePath); // read all text at the specified area to load from
             return JsonConvert.DeserializeObject<List<UserAccount>>(json); // return list of user account object
         }

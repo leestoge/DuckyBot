@@ -41,7 +41,6 @@ namespace DuckyBot.Core.Modules.Commands
                 foreach (var cmd in module.Commands) // loop through all the commands per module as well
                 {
                     var result = await cmd.CheckPreconditionsAsync(Context); // gotta check if they pass
-
                     if (result.IsSuccess) // if they DO pass
                     {
                         description += $"`!{cmd.Aliases.First()}`" + $" - {cmd.Summary}\n"; // ADD that command's first alias (aka it's actual name) to the description tag of this embed, along with the set bot command prefix and a summary of the command

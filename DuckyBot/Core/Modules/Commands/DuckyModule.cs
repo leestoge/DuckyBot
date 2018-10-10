@@ -44,13 +44,13 @@ namespace DuckyBot.Core.Modules.Commands
             //DuckyQuotes.Add(quote); // Add the parameter (quote) to the !ducky command list - self implemented strings currently lost upon bot process ending, must be added manually during downtime.
             using (var textEditor = File.AppendText("Resources/DuckyQuotes.txt"))
             {
-                await textEditor.WriteLineAsync(quote);
+                await textEditor.WriteLineAsync(quote).ConfigureAwait(false);
             }
             using (var textEditor = File.AppendText(path))
             {
                 textEditor.WriteLine(quote);
             }
-            Console.WriteLine($"{DateTime.Now.ToString("t")}: Successfully added {quote} to !ducky"); // Notify me in console the time that this happened
+            Console.WriteLine($"{DateTime.Now:t}: Successfully added {quote} to !ducky"); // Notify me in console the time that this happened
             await Context.Channel.SendMessageAsync("Successfully added '**" + quote + "**'  to the `!ducky` command.");  // Notify user their parameter has been successfully added.
         }
     }

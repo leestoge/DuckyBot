@@ -8,7 +8,9 @@ namespace DuckyBot.Core.Utilities
         public static string GetRedirectUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
+            {
                 return url;
+            }
 
             var maxRedirCount = 8;  // prevent infinite loops
             var newUrl = url;
@@ -31,7 +33,9 @@ namespace DuckyBot.Core.Utilities
                         case HttpStatusCode.RedirectMethod:
                             newUrl = resp.Headers["Location"];
                             if (newUrl == null)
+                            {
                                 return url;
+                            }
 
                             if (newUrl.IndexOf("://", StringComparison.Ordinal) == -1)
                             {
@@ -40,8 +44,6 @@ namespace DuckyBot.Core.Utilities
                                 newUrl = u.ToString();
                             }
                             break;
-                        default:
-                            return newUrl;
                     }
                     url = newUrl;
                 }
@@ -58,7 +60,9 @@ namespace DuckyBot.Core.Utilities
                 finally
                 {
                     if (resp != null)
+                    {
                         resp.Close();
+                    }
                 }
             } while (maxRedirCount-- > 0);
 

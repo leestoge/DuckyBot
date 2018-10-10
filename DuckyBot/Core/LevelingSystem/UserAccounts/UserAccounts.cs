@@ -1,7 +1,6 @@
-﻿using Discord.WebSocket;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
+using Discord.WebSocket;
 
 namespace DuckyBot.Core.LevelingSystem.UserAccounts
 {
@@ -9,13 +8,13 @@ namespace DuckyBot.Core.LevelingSystem.UserAccounts
     {
         private static readonly List<UserAccount> Accounts; //json is a list of account objects
 
-        private static string accountsFile = "Resources/accounts.json"; // account json file directory
+        private const string AccountsFile = "Resources/accounts.json"; // account json file directory
 
         static UserAccounts()
         {
-            if (DataStorage.SaveExists(accountsFile)) // if accounts file already exists
+            if (DataStorage.SaveExists(AccountsFile)) // if accounts file already exists
             {
-                Accounts = DataStorage.LoadUserAccounts(accountsFile).ToList(); // load the accounts file
+                Accounts = DataStorage.LoadUserAccounts(AccountsFile).ToList(); // load the accounts file
             }
             else // if it doesn't exist
             {
@@ -26,7 +25,7 @@ namespace DuckyBot.Core.LevelingSystem.UserAccounts
 
         public static void SaveAccounts()
         {
-            DataStorage.SaveUserAccounts(Accounts, accountsFile); // save accounts to accounts json file
+            DataStorage.SaveUserAccounts(Accounts, AccountsFile); // save accounts to accounts json file
         }
 
         public static UserAccount GetAccount(SocketUser user) //returns user account with user parameter passed in
@@ -41,13 +40,17 @@ namespace DuckyBot.Core.LevelingSystem.UserAccounts
                          select a; // select account
             // should be unique as user ids are per user
             var account = result.FirstOrDefault(); // store account from result
-            if (account == null) account = CreateUserAccount(id); //if account doesn't exist then create the account
+            if (account == null)
+            {
+                account = CreateUserAccount(id); // if account doesn't exist then create the account
+
+            }
             return account; // return the account
         }
 
         private static UserAccount CreateUserAccount(ulong id) //returns user account with id parameter passed in
         {
-            var newAccount = new UserAccount() // create new account in the accounts list json file
+            var newAccount = new UserAccount // create new account in the accounts list json file
             {
                 ID = id, // set id to the passed in id
                 XP = 0 // default value for XP is 0

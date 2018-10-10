@@ -1,14 +1,14 @@
-﻿using Discord;
-using Discord.Commands;
-using DuckyBot.Core.Utilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
+using DuckyBot.Core.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using static DuckyBot.Core.Utilities.RandomGen;
 
 namespace DuckyBot.Core.Modules.Commands
@@ -95,10 +95,6 @@ namespace DuckyBot.Core.Modules.Commands
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
                 }
-                else if (image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
-                {
-                    post = false; // do not post it
-                }
                 else // if its not an image (youtube video, etc)
                 {
                     post = false; // do not post it
@@ -131,9 +127,9 @@ namespace DuckyBot.Core.Modules.Commands
                     else // All other extensions
                     {
                         post = true; // Post them
-                        var embed = new EmbedBuilder() // Create new embedded message
+                        var embed = new EmbedBuilder // Create new embedded message
                         {
-                            Color = new Color(255, 82, 41), // set embedded message trim colour to orange
+                            Color = new Color(255, 82, 41) // set embedded message trim colour to orange
                         };
                         embed.WithImageUrl(ApiHelper.GetRedirectUrl(dogImage)); // place picture inside embedded message (ensures the picture is posted with no link shown)
                         embed.WithFooter(footer =>
