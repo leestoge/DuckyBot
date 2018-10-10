@@ -1,5 +1,6 @@
 # DuckyBot 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/leestoge/DuckyBot/blob/master/LICENSE)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6b7761cca392400aafb6cb0d41e08aea)](https://www.codacy.com/app/leestoge/DuckyBot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=leestoge/DuckyBot&amp;utm_campaign=Badge_Grade)
 [![Build status](https://ci.appveyor.com/api/projects/status/kd612i4wy06xx57u?svg=true)](https://ci.appveyor.com/project/leestoge/duckybot)
 ## A personal multi-purpose bot for [Discord](https://discordapp.com/ "Discord's Homepage") written in C# using the [Discord .NET library](https://github.com/RogueException/Discord.Net).
 <p align="center">
@@ -19,6 +20,7 @@ DuckyBot was initially inspired by a friend going by the alias "Ducky" who happe
 * Fully fledged turn based combat game for 2 users
 * Timer functionality
 * User levelling system
+* Persistent data
 * Advanced moderation capabilities
 
 I plan to add even more features and flesh out existing ones as time goes on, but DuckyBot is only a hobby so any progress may take some time.
