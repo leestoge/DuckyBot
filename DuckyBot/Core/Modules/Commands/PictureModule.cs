@@ -22,7 +22,7 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task Picture() // command async task (method basically)
         {
             var dirInfo = Directory.EnumerateFiles("Pictures/").ToList();
-            var randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
+            var randomIndex = Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
             var randomFilePathString = dirInfo[randomIndex];
 
             await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
@@ -60,7 +60,7 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task CoffeePepe() // command async task (method basically)
         {        
             var dirInfo = Directory.EnumerateFiles("Pictures/coffee/").ToList();
-            int randomIndex = StaticRandom.Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
+            int randomIndex = Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
             var randomFilePathString = dirInfo[randomIndex];
 
             await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get

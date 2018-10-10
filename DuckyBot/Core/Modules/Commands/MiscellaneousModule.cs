@@ -77,7 +77,7 @@ namespace DuckyBot.Core.Modules.Commands
                 "https://clips.twitch.tv/ShyGleamingWormUnSane",
                 "https://clips.twitch.tv/KitschyElegantLocustBIRB",
             }; // array of strings called "vids" that holds the video links
-            var rand = StaticRandom.Instance.Next(vids.Length); // get random number between 0 and array length
+            var rand = Instance.Next(vids.Length); // get random number between 0 and array length
             var vidtopost = vids[rand]; // store string at the random number position in the array
             await ReplyAsync(vidtopost); // send file at our string file path we randomly get
         }
@@ -87,7 +87,7 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task FlipAsync()
         {
             string flipToSend;
-            int flip = StaticRandom.Instance.Next(1, 3);
+            int flip = Instance.Next(1, 3);
             if ((flip == 1) && flip != 2)
             {
                 flipToSend = "Heads";

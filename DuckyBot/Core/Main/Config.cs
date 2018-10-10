@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
 
 namespace DuckyBot.Core.Main
 {
@@ -8,12 +10,14 @@ namespace DuckyBot.Core.Main
         private const string ConfigFolder = "Resources"; // folder storing config file
         private const string ConfigFile = "config.json"; // config file
 
-        public static BotConfig Bot; // instance of the defined bot config class
+        public static readonly BotConfig Bot; // instance of the defined bot config class
 
         static Config()
         {
             if (!Directory.Exists(ConfigFolder))
-                Directory.CreateDirectory(ConfigFolder); //If the folder (Resources) doesn't exist then create it
+            {
+                Directory.CreateDirectory(ConfigFolder); // If the folder (Resources) doesn't exist then create it
+            }
 
             if (!File.Exists(ConfigFolder + "/" + ConfigFile)) // if the config file doesnt exist
             {
@@ -28,9 +32,29 @@ namespace DuckyBot.Core.Main
             }
         }
     }
-    public struct BotConfig
+
+    public struct BotConfig : IEquatable<BotConfig>
     {
         public string Token; // default value for token - must be manually set within the json itself
         public string CmdPrefix; // default value for command prefix - must be manually set within the json itself
+
+        public override bool Equals(object obj)
+        {
+            return obj is BotConfig config && Equals(config);
+        }
+
+        public bool Equals(BotConfig other)
+        {
+            return Token == other.Token &&
+                   CmdPrefix == other.CmdPrefix;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 54683585;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Token);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CmdPrefix);
+            return hashCode;
+        }
     }
 }

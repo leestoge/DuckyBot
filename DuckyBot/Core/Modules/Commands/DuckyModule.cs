@@ -21,7 +21,7 @@ namespace DuckyBot.Core.Modules.Commands
         {
             do // **************** removed parts here, see archived backup if it posts empty string. ****************
             {
-                var randomDuckyIndex = StaticRandom.Instance.Next(0, _duckyQuotes.Count); // get random number between 0 and list length
+                var randomDuckyIndex = Instance.Next(0, _duckyQuotes.Count); // get random number between 0 and list length
                 var quoteToPost = _duckyQuotes[randomDuckyIndex]; // store string at the random number position in the list
 
                 if (string.IsNullOrWhiteSpace(quoteToPost)) // filter out the empty line

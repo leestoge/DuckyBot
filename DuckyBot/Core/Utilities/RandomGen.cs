@@ -3,21 +3,18 @@ using System.Threading;
 
 namespace DuckyBot.Core.Utilities
 {
-    internal static class RandomGen
+    internal static class RandomGen /* CODE TAKEN FROM STACKOVERFLOW, WRITTEN BY "Alessandro D'Andria" - https://stackoverflow.com/questions/19270507/correct-way-to-use-random-in-multithread-application */
     {
-        public static class StaticRandom /* CODE TAKEN FROM STACKOVERFLOW, WRITTEN BY "Alessandro D'Andria" - https://stackoverflow.com/questions/19270507/correct-way-to-use-random-in-multithread-application */
+        private static int _seed;
+
+        private static readonly ThreadLocal<Random> ThreadLocal =
+            new ThreadLocal<Random>(() => new Random(Interlocked.Increment(ref _seed)));
+
+        static RandomGen()
         {
-            private static int _seed;
-
-            private static readonly ThreadLocal<Random> ThreadLocal = new ThreadLocal<Random>
-                (() => new Random(Interlocked.Increment(ref _seed)));
-
-            static StaticRandom()
-            {
-                _seed = Environment.TickCount; // Seed generated from PC up-time
-            }
-
-            public static Random Instance => ThreadLocal.Value;
+            _seed = Environment.TickCount; // Seed generated from PC up-time
         }
+
+        public static Random Instance => ThreadLocal.Value;
     }
 }

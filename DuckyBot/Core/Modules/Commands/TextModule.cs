@@ -24,7 +24,7 @@ namespace DuckyBot.Core.Modules.Commands
         {
             do
             {
-                var random = StaticRandom.Instance.Next(0, _tdpQuotes.Count); // get random number between 0 and list length
+                var random = Instance.Next(0, _tdpQuotes.Count); // get random number between 0 and list length
                 var quoteToPost = _tdpQuotes[random]; // store string at the random number position in the list
 
                 if (string.IsNullOrWhiteSpace(quoteToPost))
@@ -81,17 +81,17 @@ namespace DuckyBot.Core.Modules.Commands
                 "Outlook is good",
                 "Outlook not so good",
             };
-            var rand = StaticRandom.Instance.Next(predictionsTexts.Length); // get random number between 0 and array length
+            var rand = Instance.Next(predictionsTexts.Length); // get random number between 0 and array length
             var text = predictionsTexts[rand]; // store string at the random number position in the array
             await ReplyAsync(Context.User.Mention + ", " + text); // reply with the string we got
         }
         [Command("owo")]
         [Summary("OwO what's this? <:hempus:446374082481750017>")] // command summary
-        public async Task OwO([Remainder] string message)
+        public async Task OwO([Remainder] string input)
         {
-            var temp = message.ToLower();
+            var message = input.ToLowerInvariant();
 
-            var replaceR = Regex.Replace(temp, @"r", "w");
+            var replaceR = Regex.Replace(message, @"r", "w");
             var replaceL = Regex.Replace(replaceR, @"l", "w");
             var replaceIs = Regex.Replace(replaceL, @"is", "ish");
             var replaceNe = Regex.Replace(replaceIs, @"ne", "nye");
@@ -100,35 +100,33 @@ namespace DuckyBot.Core.Modules.Commands
             var replaceNa = Regex.Replace(replaceNi, @"na", "nya");
             var replaceNo = Regex.Replace(replaceNa, @"no", "nyo");
 
-            var final = replaceNo.ToLower();
+            var final = replaceNo.ToLowerInvariant();
             await Context.Channel.SendMessageAsync(final + " " + "<:hempus:446374082481750017>");
         }
         [Command("Emoji")] // Command declaration
         [Alias("emojify", "emote")] // command aliases (also trigger task)
         [Summary("Converts user text into emoji")] // command summary
-        public async Task Emojify([Remainder] string message) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
+        public async Task Emojify([Remainder] string input) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
             string[] convertnumberArray = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" }; // array to convert numbers
             var pattern = new Regex("^[a-zA-Z]*$", RegexOptions.Compiled); // a-z, A-Z pattern
-            message = message.ToLower(); // convert message parameter to lowercase
+            var message = input.ToLowerInvariant(); // convert message parameter to lowercase
             var convertedText = ""; // initialise converted text
             foreach (char c in message) // for each character in the message
-                switch (c.ToString()) // convert character to string
+            {               
+                if (c.ToString() !=null) // convert character to string
                 {
-                    default:
-                        {
-                            if (pattern.IsMatch(c.ToString())) // if a-z, A-Z pattern matches any characters
-                            {
-                                convertedText += $":regional_indicator_{c}: "; // convert text to regional_indicator_{the character/pattern match corresponding letter}
-                            }
-                            else if (char.IsDigit(c)) // if the character is a digit
-                            {
-                                convertedText += $":{convertnumberArray[(int)char.GetNumericValue(c)]}:"; // compare to array
-                            }
-                            else convertedText += c;
-                            break;
-                        }
+                    if (pattern.IsMatch(c.ToString())) // if a-z, A-Z pattern matches any characters
+                    {
+                        convertedText += $":regional_indicator_{c}: "; // convert text to regional_indicator_{the character/pattern match corresponding letter}
+                    }
+                    else if (char.IsDigit(c)) // if the character is a digit
+                    {
+                        convertedText += $":{convertnumberArray[(int) char.GetNumericValue(c)]}:"; // compare to array
+                    }
+                    else convertedText += c;
                 }
+            }
             await ReplyAsync(convertedText); // reply converted text
         }
         [Command("vaporwave")]
@@ -136,7 +134,7 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("vaporwave text")] // command summary
         public async Task VaporwaveText([Remainder] string message)
         {
-            var temp = message.ToLower();
+            var temp = message.ToLowerInvariant();
             //AESTHETIC TEXT
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             var replaceA = Regex.Replace(temp, @"a", "Ａ");
@@ -174,7 +172,6 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("Posts random Donald Trump quotes <:donaldpepe:455848800607797298>")] // command summary
         public async Task Maga() // command async task (method basically)
         {
-            Console.WriteLine("!trump: making API call..."); // Console output for me
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
             {
                 var websiteurl = "https://api.whatdoestrumpthink.com/api/v1/quotes/random"; // The API site
@@ -184,9 +181,8 @@ namespace DuckyBot.Core.Modules.Commands
                 var result = await response.Content.ReadAsStringAsync(); // Gets full website information
                 var json = JObject.Parse(result); // Reads the json from the html
 
-                var trumpQuote = json["message"].ToString(); // Saves the detected url to DogImage string (with "url" identifier prefix)
-
-                await Context.Channel.SendMessageAsync(trumpQuote);
+                var trumpQuote = json["message"].ToString(); // Saves the detected url to trumpQuote
+                await Context.Channel.SendMessageAsync(trumpQuote); // posts the trump quote
             }
         }
         [Command("joke")] // Command declaration
@@ -211,7 +207,7 @@ namespace DuckyBot.Core.Modules.Commands
                 if (mentionedUser == null) // if there is no mentioned user
                 {
                     await Context.Channel.SendMessageAsync(setup);
-                    await Task.Delay(3000);
+                    await Task.Delay(3000).ConfigureAwait(false);
                     await Context.Channel.SendMessageAsync(punchline);
                 }
                 else // if there is a mentioned user

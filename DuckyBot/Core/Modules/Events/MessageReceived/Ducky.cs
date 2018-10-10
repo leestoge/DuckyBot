@@ -10,15 +10,15 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
         {
             if (arg.Author.Id == 98543769795723264) // if ducky types
             {
-                var message = arg.ToString();
+                var message = arg.ToString().ToLowerInvariant();
+
                 if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
                 {
                     return; // make sure its not a command, emote or url link
                 }
-
                 if (message.EndsWith(" xxx"))
                 {
-                    await Task.Delay(1500);
+                    await Task.Delay(1500).ConfigureAwait(false);
                     await arg.Channel.SendMessageAsync(arg.Author.Mention + " :kissing_closed_eyes: :kissing_closed_eyes: :kissing_closed_eyes: ");
                 }
             }

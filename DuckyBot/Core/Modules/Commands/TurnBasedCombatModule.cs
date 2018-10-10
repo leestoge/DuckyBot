@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -10,23 +9,23 @@ namespace DuckyBot.Core.Modules.Commands
     public class TurnBasedCombat : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     //SocketCommandContext allows access to the message, channel, server and user the command was invoked by, so works as the base as to how the bot knows where to reply/what user used which command, etc.
     {
-        private static string _fightStatus = "nofight"; // default to no ongoing fight
+        private string _fightStatus = "nofight"; // default to no ongoing fight
 
-        private static string _player1; // player 1 identifier
-        private static string _player2; // player 2 identifier
+        private string _player1; // player 1 identifier
+        private string _player2; // player 2 identifier
 
-        private static string _whosTurn; // current turn
-        private static string _whoWaits; // current waiting
-        private static string _placeHolder; // placeholder to switch between whosTurn and whoWaits
+        private string _whosTurn; // current turn
+        private string _whoWaits; // current waiting
+        private string _placeHolder; // placeholder to switch between whosTurn and whoWaits
 
-        private static int _player1Hp = 100; //player1 hp
-        private static int _player2Hp = 100; //player2 hp
-        private static int _player1Ap = 20; //player1 ap
-        private static int _player2Ap = 20; //player2 ap
-        private static int _player1Hpot = 2; //player1 hp potion
-        private static int _player1Apot = 2; //player1 ap potion
-        private static int _player2Hpot = 2; //player2 hp potion
-        private static int _player2Apot = 2; //player2 ap potion
+        private int _player1Hp = 100; //player1 hp
+        private int _player2Hp = 100; //player2 hp
+        private int _player1Ap = 20; //player1 ap
+        private int _player2Ap = 20; //player2 ap
+        private int _player1Hpot = 2; //player1 hp potion
+        private int _player1Apot = 2; //player1 ap potion
+        private int _player2Hpot = 2; //player2 hp potion
+        private int _player2Apot = 2; //player2 ap potion
 
         // string arrays with strings relating to the type of command used - all self implemented
         private readonly string[] _punchTexts = {
@@ -143,7 +142,7 @@ namespace DuckyBot.Core.Modules.Commands
                     Context.User.Mention, // player 1
                     user.Mention // player 2
                     };
-                    var rando = StaticRandom.Instance.Next(whoStarts.Length); // get random number between 0 and array length
+                    var rando = Instance.Next(whoStarts.Length); // get random number between 0 and array length
                     var text = whoStarts[rando]; // store string at the random number position in the array
                     _whosTurn = text; // save the stored string as string "text"
                     if (text == Context.User.Mention) // if player 1
@@ -215,17 +214,17 @@ namespace DuckyBot.Core.Modules.Commands
         {
             if (Context.Channel.Name == "worldstar") // check if bot is posting/focused on the right channel (worldstar)
             {
-                var randomText = StaticRandom.Instance.Next(_punchTexts.Length); // get random number between 0 and array length
+                var randomText = Instance.Next(_punchTexts.Length); // get random number between 0 and array length
                 var text = _punchTexts[randomText]; // store string at the random number position in the array as string "text" - results in random phrases to go along with command if it doesn't miss
 
                 if (_fightStatus == "fight_proceed") // if fight ongoing
                 {
                     if (_whosTurn == Context.User.Mention) // last mentioned players turn - (as in, the bottom text saying @user your turn!) - see screen layouts under "Design" heading for an example
                     {
-                        var chanceToHit = StaticRandom.Instance.Next(1, 10); // get random number between 1 to 10 and store as integer "chanceToHit"
+                        var chanceToHit = Instance.Next(1, 10); // get random number between 1 to 10 and store as integer "chanceToHit"
                         if (chanceToHit != 1) // if "chanceToHit" is not equal to 1 then proceed
                         {
-                            var randomMultiplier = StaticRandom.Instance.Next(1, 4); // get random number between 1 to 4 and store as integer "randomMultiplier"
+                            var randomMultiplier = Instance.Next(1, 4); // get random number between 1 to 4 and store as integer "randomMultiplier"
                             var damageValue = randomMultiplier * 2; // integer "damageValue" equals "randomMultiplier" times 2 - results in a range of 2 - 8 damage
 
                             if (Context.User.Mention != _player1) // if player 2's turn
@@ -350,17 +349,17 @@ namespace DuckyBot.Core.Modules.Commands
         {
             if (Context.Channel.Name == "worldstar") // check if bot is posting/focused on the right channel (worldstar)
             {
-                var randomText = StaticRandom.Instance.Next(_kickTexts.Length); // get random number between 0 and array length
+                var randomText = Instance.Next(_kickTexts.Length); // get random number between 0 and array length
                 var text = _kickTexts[randomText]; // store string at the random number position in the array as string "text" - results in random phrases to go along with command if it doesn't miss
 
                 if (_fightStatus == "fight_proceed") // if fight ongoing
                 {
                     if (_whosTurn == Context.User.Mention) // last mentioned players turn - (as in, the bottom text saying @user your turn!) - see screen layouts under "Design" heading for an example
                     {
-                        var chanceToHit = StaticRandom.Instance.Next(1, 6); // get random number between 1 to 6 and store as integer "chanceToHit"
+                        var chanceToHit = Instance.Next(1, 6); // get random number between 1 to 6 and store as integer "chanceToHit"
                         if (chanceToHit != 1) // if "chanceToHit" is not equal to 1 then proceed
                         {
-                            var randomMultiplier = StaticRandom.Instance.Next(2, 7); // get random number between 2 to 7 and store as integer "randomMultiplier"
+                            var randomMultiplier = Instance.Next(2, 7); // get random number between 2 to 7 and store as integer "randomMultiplier"
                             var damageValue = randomMultiplier * 2; // integer "damageValue" equals "randomMultiplier" times 2 - results in a range of 4 - 14 damage
 
                             if (Context.User.Mention != _player1) // if player 2's turn
@@ -485,17 +484,17 @@ namespace DuckyBot.Core.Modules.Commands
         {
             if (Context.Channel.Name == "worldstar") // check if bot is posting/focused on the right channel (worldstar)
             {
-                var randomText = StaticRandom.Instance.Next(_tauntTexts.Length); // get random number between 0 and array length
+                var randomText = Instance.Next(_tauntTexts.Length); // get random number between 0 and array length
                 var text = _tauntTexts[randomText]; // store string at the random number position in the array as string "text" - results in random phrases to go along with command if it doesn't miss
 
                 if (_fightStatus == "fight_proceed") // if fight ongoing
                 {
                     if (_whosTurn == Context.User.Mention) // last mentioned players turn - (as in, the bottom text saying @user your turn!) - see screen layouts under "Design" heading for an example
                     {
-                        var chanceToHit = StaticRandom.Instance.Next(1, 5); // get random number between 1 to 5 and store as integer "chanceToHit"
+                        var chanceToHit = Instance.Next(1, 5); // get random number between 1 to 5 and store as integer "chanceToHit"
                         if (chanceToHit != 1) // if "chanceToHit" is not equal to 1 then proceed
                         {
-                            var randomMultiplier = StaticRandom.Instance.Next(1, 5); // get random number between 1 to 5 and store as integer "randomMultiplier"
+                            var randomMultiplier = Instance.Next(1, 5); // get random number between 1 to 5 and store as integer "randomMultiplier"
                             var damageValue = randomMultiplier * 2; // integer "damageValue" equals "randomMultiplier" times 2 - results in a range of 2 - 10 damage
 
                             if (Context.User.Mention != _player1) // if player 2's turn
@@ -580,17 +579,17 @@ namespace DuckyBot.Core.Modules.Commands
         {
             if (Context.Channel.Name == "worldstar") // check if bot is posting/focused on the right channel (worldstar)
             {
-                var randomText = StaticRandom.Instance.Next(_critTexts.Length); // get random number between 0 and array length
+                var randomText = Instance.Next(_critTexts.Length); // get random number between 0 and array length
                 var text = _critTexts[randomText]; // store string at the random number position in the array as string "text" - results in random phrases to go along with command if it doesnt miss
 
                 if (_fightStatus == "fight_proceed") // if fight ongoing
                 {
                     if (_whosTurn == Context.User.Mention) // last mentioned players turn - (as in, the bottom text saying @user your turn!) - see screen layouts under "Design" heading for an example
                     {
-                        var chanceToHit = StaticRandom.Instance.Next(1, 3); // get random number between 1 to 3 and store as integer "chanceToHit"
+                        var chanceToHit = Instance.Next(1, 3); // get random number between 1 to 3 and store as integer "chanceToHit"
                         if (chanceToHit != 1) // if "chanceToHit" is not equal to 1 then proceed
                         {
-                            var randomMultiplier = StaticRandom.Instance.Next(10, 30); // get random number between 10 to 30 and store as integer "randomMultiplier"
+                            var randomMultiplier = Instance.Next(10, 30); // get random number between 10 to 30 and store as integer "randomMultiplier"
                             var damageValue = randomMultiplier * 2; // integer "damageValue" equals "randomMultiplier" times 2 - results in a range of 20 - 60 damage
 
                             if (Context.User.Mention != _player1) // if player 2's turn
@@ -719,7 +718,7 @@ namespace DuckyBot.Core.Modules.Commands
                 {
                     if (_whosTurn == Context.User.Mention) // last mentioned players turn - (as in, the bottom text saying @user your turn!) - see screen layouts under "Design" heading for an example
                     {
-                        var randomMultiplier = StaticRandom.Instance.Next(5, 10); // get random number between 5 to 10 and store as integer "randomMultiplier"
+                        var randomMultiplier = Instance.Next(5, 10); // get random number between 5 to 10 and store as integer "randomMultiplier"
                         var restoreValue = randomMultiplier * 2; // integer "restoreValue" equals "randomMultiplier" times 2 - results in a range of 10 - 20 potential restoration
 
                         if (Context.User.Mention != _player1) // if player 2's turn
@@ -802,7 +801,7 @@ namespace DuckyBot.Core.Modules.Commands
                 {
                     if (_whosTurn == Context.User.Mention) // last mentioned players turn - (as in, the bottom text saying @user your turn!) - see screen layouts under "Design" heading for an example
                     {
-                        var randomMultiplier = StaticRandom.Instance.Next(5, 20); // get random number between 5 to 20 and store as integer "randomMultiplier"
+                        var randomMultiplier = Instance.Next(5, 20); // get random number between 5 to 20 and store as integer "randomMultiplier"
                         var restoreValue = randomMultiplier * 2; // integer "restoreValue" equals "randomMultiplier" times 2 - results in a range of 10 - 40 potential restoration
 
                         if (Context.User.Mention != _player1) // if player 2's turn

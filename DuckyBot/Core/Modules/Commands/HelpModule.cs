@@ -1,10 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
-// using Discord.WebSocket;
-using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace DuckyBot.Core.Modules.Commands
@@ -91,7 +87,9 @@ namespace DuckyBot.Core.Modules.Commands
             await ReplyAsync("", false, final);
         }
         [Command("ratelimits")]
+        [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
         [Alias("rl", "rate")]
+        [Summary("Displays Discords allowed rate limits for BOT account functions.")]
         public async Task Rate()
         {
             const string message = "```\nREST:\n        POST Message |  5/5s    | per-channel\n      DELETE Message |  5/1s    | per-channel\n PUT/DELETE Reaction |  1/0.25s | per-channel\n        PATCH Member |  10/10s  | per-guild\n   PATCH Member Nick |  1/1s    | per-guild\n      PATCH Username |  2/3600s | per-account\n      |All Requests| |  50/1s   | per-account\nWS:\n     Gateway Connect |   1/5s   | per-account\n     Presence Update |   5/60s  | per-session\n |All Sent Messages| | 120/60s  | per-session```";
