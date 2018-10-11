@@ -225,11 +225,6 @@ namespace DuckyBot.Core.Main
             {
                 return;
             }
-
-            if (msgBeforeUpdate.Content == "https://" || editedMsg.Content == "https://")
-            {
-                return;
-            }
             await channel.SendMessageAsync($"**[{DateTime.Now}]** **[EDITED MESSAGE]** {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} **->** {msgBeforeUpdate.Author.Username}: {editedMsg.Content}");
         }       
 
