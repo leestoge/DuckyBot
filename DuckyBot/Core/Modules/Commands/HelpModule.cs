@@ -1,7 +1,7 @@
-﻿using Discord;
-using Discord.Commands;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Discord;
+using Discord.Commands;
 
 namespace DuckyBot.Core.Modules.Commands
 {
@@ -20,10 +20,10 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task HelpAsync() // command async task (method basically)
         {
             var dmChannel = await Context.User.GetOrCreateDMChannelAsync(); // A direct messages channel is created so that the !help command content will be privately sent to the user & not flood the chat
-            var builder = new EmbedBuilder() // create new embed
+            var builder = new EmbedBuilder // create new embed
             {
                 Color = new Color(255, 82, 41), // embed colour (orange)
-                Author = new EmbedAuthorBuilder() // create new author within embed (used as a title when displayed)
+                Author = new EmbedAuthorBuilder // create new author within embed (used as a title when displayed)
                 {
                     Name = "The DuckyBot commands must be typed precisely as shown below:-", // author text
                     IconUrl = "http://cdn.edgecast.steamstatic.com/steamcommunity/public/images/avatars/ea/ea879dd914a94d7f719bb553306786fa5ae6acb0_full.jpg" // duckybot logo, displayed beside author text
@@ -70,7 +70,9 @@ namespace DuckyBot.Core.Modules.Commands
             var client = Context.Client;
 
             if (!string.IsNullOrWhiteSpace(gld.IconUrl))
+            {
                 embed.ThumbnailUrl = gld.IconUrl;
+            }
             var O = gld.Owner.Username;
 
             var V = gld.VoiceRegionId;

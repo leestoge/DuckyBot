@@ -146,7 +146,7 @@ namespace DuckyBot.Core.Modules.Commands
         }
         [Command("aesthetic")]
         [Alias("a", "outrun")]
-        [Summary("Posts random ＡＥＳＴＨＥＴＩＣ　ワネヘ pictures")] // command summary
+        [Summary("Posts random ＡＥＳＴＨＥＴＩＣ　ワネヘ images")] // command summary
         public async Task Aesthetic()
         {
             bool post; // Post default to true
@@ -269,7 +269,7 @@ namespace DuckyBot.Core.Modules.Commands
         [Summary("Post pictures of people who've just been fucked up fam :100:")] // command summary
         public async Task Fuckmeup()
         {
-            var post = true; // Post default to true
+            bool post; // Post default to true
             do
             {
                 var weblink = "https://www.reddit.com/r/Justfuckmyshitup/random/.json"; // api link

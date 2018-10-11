@@ -118,13 +118,16 @@ namespace DuckyBot.Core.Modules.Commands
                 {
                     if (pattern.IsMatch(c.ToString())) // if a-z, A-Z pattern matches any characters
                     {
-                        convertedText += $":regional_indicator_{c}: "; // convert text to regional_indicator_{the character/pattern match corresponding letter}
+                        convertedText += $":regional_indicator_{c}: "; // this converts text to regional_indicator {the character/pattern match corresponding letter}
                     }
                     else if (char.IsDigit(c)) // if the character is a digit
                     {
                         convertedText += $":{convertnumberArray[(int) char.GetNumericValue(c)]}:"; // compare to array
                     }
-                    else convertedText += c;
+                    else
+                    {
+                        convertedText += c;
+                    }
                 }
             }
             await ReplyAsync(convertedText); // reply converted text
