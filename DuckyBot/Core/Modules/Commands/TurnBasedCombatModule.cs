@@ -9,23 +9,23 @@ namespace DuckyBot.Core.Modules.Commands
     public class TurnBasedCombat : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     //SocketCommandContext allows access to the message, channel, server and user the command was invoked by, so works as the base as to how the bot knows where to reply/what user used which command, etc.
     {
-        private string _fightStatus = "nofight"; // default to no ongoing fight
+        private static string _fightStatus = "nofight"; // default to no ongoing fight
 
-        private string _player1; // player 1 identifier
-        private string _player2; // player 2 identifier
+        private static string _player1; // player 1 identifier
+        private static string _player2; // player 2 identifier
 
-        private string _whosTurn; // current turn
-        private string _whoWaits; // current waiting
-        private string _placeHolder; // placeholder to switch between whosTurn and whoWaits
+        private static string _whosTurn; // current turn
+        private static string _whoWaits; // current waiting
+        private static string _placeHolder; // placeholder to switch between whosTurn and whoWaits
 
-        private int _player1Hp = 100; //player1 hp
-        private int _player2Hp = 100; //player2 hp
-        private int _player1Ap = 20; //player1 ap
-        private int _player2Ap = 20; //player2 ap
-        private int _player1Hpot = 2; //player1 hp potion
-        private int _player1Apot = 2; //player1 ap potion
-        private int _player2Hpot = 2; //player2 hp potion
-        private int _player2Apot = 2; //player2 ap potion
+        private static int _player1Hp = 100; //player1 hp
+        private static int _player2Hp = 100; //player2 hp
+        private static int _player1Ap = 20; //player1 ap
+        private static int _player2Ap = 20; //player2 ap
+        private static int _player1Hpot = 2; //player1 hp potion
+        private static int _player1Apot = 2; //player1 ap potion
+        private static int _player2Hpot = 2; //player2 hp potion
+        private static int _player2Apot = 2; //player2 ap potion
 
         // string arrays with strings relating to the type of command used - all self implemented
         private readonly string[] _punchTexts = {
@@ -164,10 +164,10 @@ namespace DuckyBot.Core.Modules.Commands
             }
             else
             {
-                    await Context.Channel.SendMessageAsync(Context.User.Mention + " you can't fight me!"); // notify user
-                    var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
-                    var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
-                    await z.SendMessageAsync($"[{DateTime.Now:t}] **{Context.User.Username}** tried to fight DuckyBot."); // private message me with error reason (with time error occurred)
+                await Context.Channel.SendMessageAsync(Context.User.Mention + " you can't fight me!"); // notify user
+                var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
+                var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
+                await z.SendMessageAsync($"[{DateTime.Now:t}] **{Context.User.Username}** tried to fight DuckyBot."); // private message me with error reason (with time error occurred)
             }
         }
         [Command("run")] // command declaration
@@ -193,8 +193,8 @@ namespace DuckyBot.Core.Modules.Commands
                     if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                     {
                         await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                        await Task.Delay(10000); // delay deletion task by 10 seconds
-                        await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                        await Task.Delay(10000).ConfigureAwait(false); // delay deletion task by 10 seconds
+                        await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                     }
                 }
                 else //if no fight ongoing
@@ -256,8 +256,8 @@ namespace DuckyBot.Core.Modules.Commands
                                         if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                                         {
                                             await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                                            await Task.Delay(10000); // delay deletion task by 10 seconds
-                                            await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                                            await Task.Delay(10000).ConfigureAwait(false); // delay deletion task by 10 seconds
+                                            await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                                         }
                                     }
                                 }
@@ -299,8 +299,8 @@ namespace DuckyBot.Core.Modules.Commands
                                         if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                                         {
                                             await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                                            await Task.Delay(10000); // delay deletion task by 10 seconds
-                                            await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                                            await Task.Delay(10000).ConfigureAwait(false); // delay deletion task by 10 seconds
+                                            await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                                         }
                                     }
                                 }
@@ -391,8 +391,8 @@ namespace DuckyBot.Core.Modules.Commands
                                         if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                                         {
                                             await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                                            await Task.Delay(10000);  // delay deletion task by 10 seconds
-                                            await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                                            await Task.Delay(10000).ConfigureAwait(false);  // delay deletion task by 10 seconds
+                                            await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                                         }
                                     }
                                 }
@@ -434,8 +434,8 @@ namespace DuckyBot.Core.Modules.Commands
                                         if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                                         {
                                             await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                                            await Task.Delay(10000); // delay deletion task by 10 seconds
-                                            await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                                            await Task.Delay(10000).ConfigureAwait(false); // delay deletion task by 10 seconds
+                                            await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                                         }
                                     }
                                 }
@@ -621,8 +621,8 @@ namespace DuckyBot.Core.Modules.Commands
                                         if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                                         {
                                             await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                                            await Task.Delay(10000); // delay deletion task by 10 seconds
-                                            await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                                            await Task.Delay(10000).ConfigureAwait(false); // delay deletion task by 10 seconds
+                                            await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                                         }
                                     }
                                 }
@@ -664,8 +664,8 @@ namespace DuckyBot.Core.Modules.Commands
                                         if (Context.Channel.Name == "worldstar") // secondary check for channel as we are about to PERMANENTLY delete a text channel
                                         {
                                             await Context.Channel.SendMessageAsync("`#worldstar channel will be deleted in 10 seconds.`"); // notify user of deletion timer - gives users time to see ending results, etc.
-                                            await Task.Delay(10000); // delay deletion task by 10 seconds
-                                            await ((IGuildChannel) Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
+                                            await Task.Delay(10000).ConfigureAwait(false); // delay deletion task by 10 seconds
+                                            await ((IGuildChannel)Context.Channel).DeleteAsync(); // delete WORLDSTAR text channel
                                         }
                                     }
                                 }
