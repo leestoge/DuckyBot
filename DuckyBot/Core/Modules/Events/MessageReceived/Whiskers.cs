@@ -13,16 +13,19 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             {
                 var message = arg.ToString().ToLowerInvariant();
 
-                if (message.StartsWith("!") || message.StartsWith(":") && message.EndsWith(":") || message.StartsWith("https://"))
+                if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
                 {
                     return; // make sure its not a command, emote or url link
                 }
+
                 if (message.Contains("girl") || message.Contains("girlfriend") || message.Contains("wife") || message.Contains("gf") || message.Contains("woman") || message.Contains("women") || message.Contains("married") || message.Contains("marry") || message.Contains("marrying"))
                 {
-                    var usermsg = arg as IUserMessage;
                     var emote = Emote.Parse("<:feels:346348418702245888>");
                     await Task.Delay(1500).ConfigureAwait(false);
-                    if (usermsg != null) await usermsg.AddReactionAsync(emote);
+                    if (arg is IUserMessage usermsg)
+                    {
+                        await usermsg.AddReactionAsync(emote);
+                    }
                 }
             }
         }

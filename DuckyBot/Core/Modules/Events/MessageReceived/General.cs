@@ -22,10 +22,12 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
 
             if (gachiArray.Any(message.Contains)) // if any of the gachi words/phrases are detected
             {
-                var usermsg = msg as IUserMessage;
                 var emote = Emote.Parse("<:gachiGASM:448977978236600320>"); // react with gachiGASM
                 await Task.Delay(1500).ConfigureAwait(false);
-                if (usermsg != null) await usermsg.AddReactionAsync(emote);
+                if (msg is IUserMessage usermsg)
+                {
+                    await usermsg.AddReactionAsync(emote);
+                }
             }
         }
         public static async Task WhoDidThis(SocketMessage msg)
@@ -42,10 +44,12 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             } 
             if (message.Contains("who did this")) // if it contains all 3, highly unlikely to trigger randomly
             {
-                var usermsg = msg as IUserMessage;
                 var emote = new Emoji("😂");
                 await Task.Delay(1500).ConfigureAwait(false);
-                if (usermsg != null) await usermsg.AddReactionAsync(emote);
+                if (msg is IUserMessage usermsg)
+                {
+                    await usermsg.AddReactionAsync(emote);
+                }
             }
         }
         public static async Task GoodBot(SocketMessage msg)
@@ -115,10 +119,12 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
             }
             if (cummoArray.Any(message.Contains)) // if any of the cummo words/phrases are detected
             {
-                var usermsg = msg as IUserMessage;
                 var emote = Emote.Parse("<:CUMMO:428285290193616896>");
                 await Task.Delay(1500).ConfigureAwait(false);
-                if (usermsg != null) await usermsg.AddReactionAsync(emote);
+                if (msg is IUserMessage usermsg)
+                {
+                    await usermsg.AddReactionAsync(emote);
+                }
             }
         }
     }

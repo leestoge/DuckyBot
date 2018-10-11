@@ -16,6 +16,7 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                 {
                     return; // make sure its not a command, emote or url link
                 }
+
                 if (message.EndsWith(" xxx"))
                 {
                     await Task.Delay(1500).ConfigureAwait(false);
