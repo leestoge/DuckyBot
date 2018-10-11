@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -39,7 +40,7 @@ namespace DuckyBot.Core.Modules.Commands
                     var result = await cmd.CheckPreconditionsAsync(Context); // gotta check if they pass
                     if (result.IsSuccess) // if they DO pass
                     {
-                        description += $"`!{cmd.Aliases.First()}`" + $" - {cmd.Summary}\n"; // ADD that command's first alias (aka it's actual name) to the description tag of this embed, along with the set bot command prefix and a summary of the command
+                        description += new StringBuilder().AppendLine($"`!{cmd.Aliases.First()}`" + $" - {cmd.Summary}"); // ADD that command's first alias (aka it's actual name) to the description tag of this embed, along with the set bot command prefix and a summary of the command
                     }
                 }
 
