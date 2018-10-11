@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DuckyBot.Core.Modules.Events.MessageReceived;
 using Discord.Commands;
 using System.Reflection;
-// using DuckyBot.Core.LevelingSystem;
 using System.Collections.Generic;
 using System.Linq;
 using DuckyBot.Core.LevelingSystem;
@@ -60,7 +59,7 @@ namespace DuckyBot.Core.Main
             await _client.StartAsync(); // start up bot
 
             Global.Client = _client;
-            await Task.Delay(-1); // wait until the operation ends (never unless closed)
+            await Task.Delay(-1).ConfigureAwait(false); // wait until the operation ends (never unless closed)
         }
 
         private async Task HandleCommand(SocketMessage messageParameter)
@@ -68,8 +67,15 @@ namespace DuckyBot.Core.Main
             var message = messageParameter as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
 
-            if (context.Message == null || context.Message.Content == "") return;
-            if (context.User.IsBot) return;
+            if (context.Message == null || context.Message.Content == "")
+            {
+                return;
+            }
+
+            if (context.User.IsBot)
+            {
+                return;
+            }
 
             var argPos = 0;
 
@@ -125,11 +131,13 @@ namespace DuckyBot.Core.Main
         private void ConsoleInput()
         {
             var input = string.Empty;
-            while (input.Trim().ToLower() != "!block")
+            while (input.Trim().ToLowerInvariant() != "!block")
             {
                 input = Console.ReadLine();
-                if (input.Trim().ToLower() == "!message")
+                if (input.Trim().ToLowerInvariant() == "!message")
+                {
                     ConsoleSendMessage();
+                }
             }
         }
 
@@ -195,17 +203,34 @@ namespace DuckyBot.Core.Main
         private static async Task MessageDeleted(Cacheable<IMessage, ulong> msgCache, ISocketMessageChannel ContextChannel)
         {
             var msg = await msgCache.GetOrDownloadAsync();
-            if (msg.Author.Username == "DuckyBot") return;
+            var channel = Global.Client.GetGuild(307712604904620034).GetTextChannel(475222498175352834);
+            if (msg.Author.Username == "DuckyBot")
+            {
+                return;
+            }
 
-            Console.WriteLine($"{DateTime.Now:t} [Discord] {msg.Author.Username}: {msg.Content} (DELETED)");
+            if (msg.EditedTimestamp == DateTime.Now.AddMinutes(-5))
+            {
+                return;
+            }
+
+            await channel.SendMessageAsync($"**[{DateTime.Now}]** **[DELETED MESSAGE]** {msg.Author.Username}: {msg.Content}");
         }
 
         private static async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel contextChannel)
         {
             var msgBeforeUpdate = await cachedMsgBeforeUpdate.GetOrDownloadAsync();
-            if (msgBeforeUpdate.Author.Username == "DuckyBot") return;
+            var channel = Global.Client.GetGuild(307712604904620034).GetTextChannel(475222498175352834);
+            if (msgBeforeUpdate.Author.Username == "DuckyBot")
+            {
+                return;
+            }
 
-            Console.WriteLine($"{DateTime.Now:t} [Discord] {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} | {msgBeforeUpdate.Author.Username}: {editedMsg.Content} (EDITED)");
+            if (msgBeforeUpdate.Content == "https://" || editedMsg.Content == "https://")
+            {
+                return;
+            }
+            await channel.SendMessageAsync($"**[{DateTime.Now}]** **[EDITED MESSAGE]** {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} **->** {msgBeforeUpdate.Author.Username}: {editedMsg.Content}");
         }       
 
         private static async Task Log(LogMessage msg) //log message argument
