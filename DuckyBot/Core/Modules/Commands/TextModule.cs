@@ -112,27 +112,26 @@ namespace DuckyBot.Core.Modules.Commands
             string[] convertnumberArray = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" }; // array to convert numbers
             var pattern = new Regex("^[a-zA-Z]*$", RegexOptions.Compiled); // a-z, A-Z pattern
             var message = input.ToLowerInvariant(); // convert message parameter to lowercase
-            var convertedText = ""; // initialise converted text
-            var post = new StringBuilder();
+            var convertedText = new StringBuilder(); // initialise converted text
             foreach (char c in message) // for each character in the message
             {               
                 if (c.ToString() !=null) // convert character to string
                 {
                     if (pattern.IsMatch(c.ToString())) // if a-z, A-Z pattern matches any characters
                     {
-                        convertedText += post.Append($":regional_indicator_{c}: "); // this converts text to regional_indicator (the character/pattern match corresponding letter
+                        convertedText.Append($":regional_indicator_{c}: "); // this converts text to regional_indicator (the character/pattern match corresponding letter
                     }
                     else if (char.IsDigit(c)) // if the character is a digit
                     {
-                        convertedText += post.Append($":{convertnumberArray[(int) char.GetNumericValue(c)]}: "); // compare to array
+                        convertedText.Append($":{convertnumberArray[(int) char.GetNumericValue(c)]}: "); // compare to array
                     }
                     else
                     {
-                        convertedText += post.Append(c);
+                        convertedText.Append(c);
                     }
                 }
             }
-            await ReplyAsync(convertedText); // reply converted text
+            await ReplyAsync(convertedText.ToString()); // reply converted text
         }
         [Command("vaporwave")]
         [Alias("v")] // command aliases (also trigger task)

@@ -33,19 +33,20 @@ namespace DuckyBot.Core.Modules.Commands
 
             foreach (var module in _service.Modules) // loop through the modules taken from the command service initiated earlier!
             {
-                string description = null; // description defaults to null to ensure no errors occur if the description building fails
+                // string description = null; // description defaults to null to ensure no errors occur if the description building fails
+
+                var description = new StringBuilder();
 
                 foreach (var cmd in module.Commands) // loop through all the commands per module as well
-                {
-                    var post = new StringBuilder();
+                {               
                     var result = await cmd.CheckPreconditionsAsync(Context); // gotta check if they pass
                     if (result.IsSuccess) // if they DO pass
                     {
-                        description += post.AppendLine($"`!{cmd.Aliases.First()}`" + $" - {cmd.Summary}"); // ADD that command's first alias (aka it's actual name) to the description tag of this embed, along with the set bot command prefix and a summary of the command
+                        description.AppendLine($"`!{cmd.Aliases.First()}`" + $" - {cmd.Summary}"); // ADD that command's first alias (aka it's actual name) to the description tag of this embed, along with the set bot command prefix and a summary of the command
                     }
                 }
 
-                if (!string.IsNullOrWhiteSpace(description)) // if the module wasn't empty add a field where we drop all the command data into!
+                if (!string.IsNullOrWhiteSpace(description.ToString())) // if the module wasn't empty add a field where we drop all the command data into!
                 {
                     builder.AddField(x => // add field with multiple properties defined
                     {
