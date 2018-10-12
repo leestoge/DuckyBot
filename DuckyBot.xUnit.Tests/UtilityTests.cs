@@ -3,7 +3,7 @@ using Xunit;
 
 namespace DuckyBot.xUnit.Tests
 {
-    public class UtilityTests
+    public static class UtilityTests
     {
         [Fact]
         public static void MyFirstTest()
