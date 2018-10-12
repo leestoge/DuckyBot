@@ -113,21 +113,22 @@ namespace DuckyBot.Core.Modules.Commands
             var pattern = new Regex("^[a-zA-Z]*$", RegexOptions.Compiled); // a-z, A-Z pattern
             var message = input.ToLowerInvariant(); // convert message parameter to lowercase
             var convertedText = ""; // initialise converted text
+            var post = new StringBuilder();
             foreach (char c in message) // for each character in the message
             {               
                 if (c.ToString() !=null) // convert character to string
                 {
                     if (pattern.IsMatch(c.ToString())) // if a-z, A-Z pattern matches any characters
                     {
-                        convertedText += new StringBuilder().Append($":regional_indicator_{c}: "); // this converts text to regional_indicator (the character/pattern match corresponding letter
+                        convertedText += post.Append($":regional_indicator_{c}: "); // this converts text to regional_indicator (the character/pattern match corresponding letter
                     }
                     else if (char.IsDigit(c)) // if the character is a digit
                     {
-                        convertedText += new StringBuilder().Append($":{convertnumberArray[(int) char.GetNumericValue(c)]}: "); // compare to array
+                        convertedText += post.Append($":{convertnumberArray[(int) char.GetNumericValue(c)]}: "); // compare to array
                     }
                     else
                     {
-                        convertedText += new StringBuilder().Append(c);
+                        convertedText += post.Append(c);
                     }
                 }
             }
