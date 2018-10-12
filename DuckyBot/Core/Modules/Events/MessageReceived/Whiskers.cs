@@ -7,11 +7,11 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
 {
     internal class Whiskers : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     {
-        public static async Task GiveFeels(SocketMessage arg)
+        public static async Task GiveFeels(SocketMessage msg)
         {
-            if (arg.Author.Id == 193075985267163136) // if whiskers types
+            if (msg.Author.Id == 193075985267163136) // if whiskers types
             {
-                var message = arg.ToString().ToLowerInvariant();
+                var message = msg.ToString().ToLowerInvariant();
 
                 if (message.StartsWith("!") || message.StartsWith(":") || message.StartsWith("https://"))
                 {
@@ -20,9 +20,10 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
 
                 if (message.Contains("girl") || message.Contains("girlfriend") || message.Contains("wife") || message.Contains("gf") || message.Contains("woman") || message.Contains("women") || message.Contains("married") || message.Contains("marry") || message.Contains("marrying"))
                 {
+                    var usermsg = msg as IUserMessage;
                     var emote = Emote.Parse("<:feels:346348418702245888>");
                     await Task.Delay(1500).ConfigureAwait(false);
-                    if (arg is IUserMessage usermsg)
+                    if (usermsg != null)
                     {
                         await usermsg.AddReactionAsync(emote);
                     }

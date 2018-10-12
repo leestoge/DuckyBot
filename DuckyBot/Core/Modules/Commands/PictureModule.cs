@@ -174,10 +174,6 @@ namespace DuckyBot.Core.Modules.Commands
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
                 }
-                else if (image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
-                {
-                    post = false; // do not post it
-                }
                 else // if its not an image (youtube video, etc)
                 {
                     post = false; // do not post it
@@ -214,10 +210,6 @@ namespace DuckyBot.Core.Modules.Commands
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
                 }
-                else if (image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
-                {
-                    post = false; // do not post it
-                }
                 else // if its not an image (youtube video, etc)
                 {
                     post = false; // do not post it
@@ -253,10 +245,6 @@ namespace DuckyBot.Core.Modules.Commands
                     });
                     var final = embed.Build(); // final = constructed embedded message
                     await Context.Channel.SendMessageAsync("", false, final); // post embedded message
-                }
-                else if(image.EndsWith(".gifv")) // .gifv causes Discord not to display the image... for some reason
-                {
-                    post = false; // do not post it
                 }
                 else // if its not a gif
                 {
