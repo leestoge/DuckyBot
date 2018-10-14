@@ -125,29 +125,29 @@ namespace DuckyBot.Core.Main
             _client.MessageReceived += Trucks.GiveDonut;
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            ConsoleInput();
+            await ConsoleInput();
         }
 
-        private void ConsoleInput()
+        private async Task ConsoleInput()
         {
             var input = string.Empty;
-            while (input.Trim().ToLowerInvariant() != "!block")
+            while (input != null && input.Trim().ToLowerInvariant() != "!block")
             {
                 input = Console.ReadLine();
-                if (input.Trim().ToLowerInvariant() == "!message")
+                if (input != null && input.Trim().ToLowerInvariant() == "!message")
                 {
-                    ConsoleSendMessage();
+                    await ConsoleSendMessage();
                 }
             }
         }
 
-        private async void ConsoleSendMessage()
+        private async Task ConsoleSendMessage()
         {
             Console.WriteLine("Select the guild:");
             var guild = GetSelectedGuild(_client.Guilds);
             var textChannel = GetSelectedTextChannel(guild.TextChannels);
             var msg = string.Empty;
-            while (msg.Trim() == string.Empty)
+            while (msg != null && msg.Trim() == string.Empty)
             {
                 Console.WriteLine("Your message:");
                 msg = Console.ReadLine();
