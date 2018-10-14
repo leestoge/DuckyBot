@@ -112,7 +112,7 @@ namespace DuckyBot.Core.Main
             await _client.SetGameAsync("DuckyBot | !help"); // set the bots "Playing" status
             await _client.SetStatusAsync(UserStatus.Online); // set the bots online status
 
-            //CUSTOM EVENT HANDLERS
+            // EVENT HANDLERS
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _client.MessageReceived += General.Gay;
             _client.MessageReceived += General.Cummo;
@@ -125,7 +125,7 @@ namespace DuckyBot.Core.Main
             _client.MessageReceived += Trucks.GiveDonut;
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            await ConsoleInput();
+            await ConsoleInput().ConfigureAwait(false);
         }
 
         private async Task ConsoleInput()
@@ -136,7 +136,7 @@ namespace DuckyBot.Core.Main
                 input = Console.ReadLine();
                 if (input != null && input.Trim().ToLowerInvariant() == "!message")
                 {
-                    await ConsoleSendMessage();
+                    await ConsoleSendMessage().ConfigureAwait(false);
                 }
             }
         }
