@@ -95,14 +95,14 @@ namespace DuckyBot.Core.Main
                 await z.SendMessageAsync($"[{DateTime.UtcNow:t} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}"); // private message me with exact error reason
             }
 
-            // Leveling up related
+            // Levelling up related
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             await Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
             // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            // Leveling up end
+            // Levelling up end
         }
 
         private async Task Client_ready()

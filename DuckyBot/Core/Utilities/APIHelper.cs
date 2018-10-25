@@ -12,17 +12,15 @@ namespace DuckyBot.Core.Utilities
                 return url;
             }
 
-            var maxRedirCount = 8;  // prevent infinite loops
             var newUrl = url;
-            do
             {
                 HttpWebResponse resp = null;
                 try
                 {
-                    var req = (HttpWebRequest)WebRequest.Create(url);
+                    var req = (HttpWebRequest) WebRequest.Create(url);
                     req.Method = "HEAD";
                     req.AllowAutoRedirect = false;
-                    resp = (HttpWebResponse)req.GetResponse();
+                    resp = (HttpWebResponse) req.GetResponse();
                     switch (resp.StatusCode)
                     {
                         case HttpStatusCode.OK:
@@ -31,6 +29,7 @@ namespace DuckyBot.Core.Utilities
                         case HttpStatusCode.MovedPermanently:
                         case HttpStatusCode.RedirectKeepVerb:
                         case HttpStatusCode.RedirectMethod:
+
                             newUrl = resp.Headers["Location"];
                             if (newUrl == null)
                             {
@@ -43,9 +42,12 @@ namespace DuckyBot.Core.Utilities
                                 var u = new Uri(new Uri(url), newUrl);
                                 newUrl = u.ToString();
                             }
+
                             break;
+                        default:throw new InvalidOperationException();
                     }
-                    url = newUrl;
+
+                    return newUrl;
                 }
                 catch (WebException)
                 {
@@ -64,9 +66,7 @@ namespace DuckyBot.Core.Utilities
                         resp.Close();
                     }
                 }
-            } while (maxRedirCount-- > 0);
-
-            return newUrl;
+            }
         }
     }
 }

@@ -10,14 +10,6 @@ namespace DuckyBot.Core.LevelingSystem.UserAccounts
         // XP is the same throughout all servers the bot can collect it in. - user will gain XP in ANY server/channel the bot is also in.
 
         public uint LevelNumber // unsigned integer (doesn't go below 0)
-        {
-            get
-            {
-                //y = x ^ 2 * 50, x axis = level, y = required experience
-                //XP = LEVEL ^ 2 * 50
-
-                return (uint)Math.Sqrt(XP / 200); // explained as well as I can in screen layouts section
-            }
-        }
+            => (uint)Math.Sqrt((double)XP / 200);
     }
 }

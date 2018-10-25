@@ -48,5 +48,13 @@ namespace DuckyBot.Core.Main
             return Token == other.Token &&
                    CmdPrefix == other.CmdPrefix;
         }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 54683585;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Token);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CmdPrefix);
+            return hashCode;
+        }
     }
 }
