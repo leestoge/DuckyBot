@@ -45,8 +45,7 @@ namespace DuckyBot.Core.Main
 
         public bool Equals(BotConfig other)
         {
-            return Token == other.Token &&
-                   CmdPrefix == other.CmdPrefix;
+            return Token == other.Token && CmdPrefix == other.CmdPrefix;
         }
 
         public override int GetHashCode()
