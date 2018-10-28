@@ -88,26 +88,37 @@ namespace DuckyBot.Core.Main
 
             if (!result.IsSuccess && result.Error != CommandError.UnknownCommand) // If not successful, reply with an error. - Filters out unknown command error as mis-typed commands happen frequently.
             {
-                //await context.Channel.SendMessageAsync("Something has went wrong! Stoge has been notified."); // Tell user an error occured
+                await context.Channel.SendMessageAsync(result.ErrorReason); // Tell user an error occured
                 Console.WriteLine($"[{DateTime.UtcNow:t} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}");
+                await Task.Delay(1500).ConfigureAwait(false);
+
                 var application = await context.Client.GetApplicationInfoAsync(); // gets channels from discord client
-                var z = await application.Owner.GetOrCreateDMChannelAsync(); // find dm channel to private message me
-                await z.SendMessageAsync($"[{DateTime.UtcNow:t} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}"); // private message me with exact error reason
+                var ownerDM = await application.Owner.GetOrCreateDMChannelAsync(); // find dm channel to private message me
+                await ownerDM.SendMessageAsync($"[{DateTime.UtcNow:t} [Commands] {context.Message.Author.Username}: {context.Message.Content} | Error: {result.ErrorReason}"); // private message me with exact error reason
             }
 
             // Levelling up related
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            var userMessages = (await messageParameter.Channel.GetMessagesAsync(messageParameter, Direction.Before, 1).Flatten()).Where(x => x.Author == messageParameter.Author);
+            IMessage first = null;
+            foreach (var userMessage in userMessages)
+            {
+                first = userMessage;
+                break;
+            }
 
-            await Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
-            // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
-
+            if (first != null && first.CreatedAt >= DateTimeOffset.UtcNow.Subtract(TimeSpan.FromSeconds(300)))
+            {
+                // Execute the UserSentMessage task within the leveling class - passing in the user who typed the message and the channel they typed it in
+                await Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel); /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
+            }
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // Levelling up end
         }
 
         private async Task Client_ready()
         {
-            await RepeatingTimer.StartTimer(); // hydrate reminder every 30min
+            await RepeatingTimer.StartTimer(); // start timer to change bot status message
 
             await _client.SetGameAsync("DuckyBot | !help"); // set the bots "Playing" status
             await _client.SetStatusAsync(UserStatus.Online); // set the bots online status
