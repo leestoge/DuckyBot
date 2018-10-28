@@ -23,7 +23,8 @@ namespace DuckyBot.Core.LevelingSystem // *** DOESN'T WORK ***
                     Author = new EmbedAuthorBuilder // create new author within embed (used as a title when displayed)
                     {
                         Name = user.Username + " just levelled up!", // author text
-                        IconUrl = "http://cdn.edgecast.steamstatic.com/steamcommunity/public/images/avatars/ea/ea879dd914a94d7f719bb553306786fa5ae6acb0_full.jpg" // duckybot logo, displayed beside author text
+                        IconUrl =
+                            "http://cdn.edgecast.steamstatic.com/steamcommunity/public/images/avatars/ea/ea879dd914a94d7f719bb553306786fa5ae6acb0_full.jpg" // duckybot logo, displayed beside author text
                     }
                 };
                 embed.AddInlineField("LEVEL", newLevel); // users current level
