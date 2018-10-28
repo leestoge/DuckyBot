@@ -59,6 +59,34 @@ namespace DuckyBot.Core.Modules.Commands
             await dmChannel.SendMessageAsync("", false, builder.Build()); // then send embed to the user in the direct messages channel
             await Context.Channel.SendMessageAsync(Context.User.Mention + " Check your direct messages for a list of my commands! <:duckybot:378960915116064768> "); // reply to user in the channel they used the !help command to notify them of the direct message
         }
+        [Command("help")]
+        public async Task HelpAsync(string command)
+        {
+            var result = _service.Search(Context, command);
+
+            if (!result.IsSuccess)
+            {
+                await ReplyAsync($"Sorry, I couldn't find a command like `{command}`.");
+                return;
+            }
+            var builder = new EmbedBuilder()
+            {
+                Color = new Color(255, 82, 41),
+            };
+            foreach (var match in result.Commands)
+            {
+                var cmd = match.Command;
+
+                builder.AddField(x =>
+                {
+                    x.Name = $"Here are some commands like `{command}`";
+                    x.Value = $"Aliases: {string.Join(", ", cmd.Aliases)}\n" + $"Parameters: {string.Join(", ", cmd.Parameters.Select(p => p.Name))}\n" +
+                              $"Summary: {cmd.Summary}";
+                    x.IsInline = false;
+                });
+            }           
+            await ReplyAsync("", false, builder.Build());
+        }
         [Command("ServerInfo")]
         [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
         [Alias("sinfo", "servinfo")]
