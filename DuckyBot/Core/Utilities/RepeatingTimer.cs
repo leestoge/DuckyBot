@@ -17,7 +17,7 @@ namespace DuckyBot.Core.Utilities
                 Enabled = true
             };
 
-             loopingTimer.Elapsed += OnTimerTickedAsync;
+            loopingTimer.Elapsed += OnTimerTickedAsync;
             return Task.CompletedTask;
         }
 
@@ -40,7 +40,10 @@ namespace DuckyBot.Core.Utilities
                 Console.WriteLine("Timer ticked before the client was ready."); // error checking
             }
 
-            if (Global.Client != null) await Global.Client.SetGameAsync(text);
+            if (Global.Client != null)
+            {
+                await Global.Client.SetGameAsync(text);
+            }
         }
     }
 }

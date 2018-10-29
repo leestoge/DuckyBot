@@ -69,7 +69,7 @@ namespace DuckyBot.Core.Modules.Commands
                 await ReplyAsync($"Sorry, I couldn't find a command like `{command}`.");
                 return;
             }
-            var builder = new EmbedBuilder()
+            var builder = new EmbedBuilder
             {
                 Color = new Color(255, 82, 41),
             };
