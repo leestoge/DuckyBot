@@ -134,6 +134,7 @@ namespace DuckyBot.Core.Main
             _client.MessageReceived += Whiskers.GiveFeels;
             _client.MessageReceived += Ducky.GiveKisses;
             _client.MessageReceived += Trucks.GiveDonut;
+            _client.MessageReceived += Boon.GivePepega;
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             await ConsoleInput().ConfigureAwait(false);
