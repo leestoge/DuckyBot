@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Threading.Tasks;
+using DuckyBot.Core.Utilities;
 
 namespace DuckyBot.Core.Modules.Events.MessageReceived
 {
@@ -9,7 +10,7 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
     {
         public static async Task GiveFeels(SocketMessage msg)
         {
-            if (msg.Author.Id == 193075985267163136) // if whiskers types
+            if (msg.Author.Id == UserIDs.Whiskers) // if whiskers types
             {
                 var message = msg.ToString().ToLowerInvariant();
 

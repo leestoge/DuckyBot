@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using System.Text.RegularExpressions;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
     internal class Trucks : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     {
         public static async Task GiveDonut(SocketMessage msg)
-        {
-            if (msg.Author.Id == UserIDs.Me) // if trucks types
+        {       
+            if (msg.Author.Id == UserIDs.trucks) // if trucks types
             {
                 var message = msg.ToString().ToLowerInvariant();
 
@@ -19,7 +20,9 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                     return; // make sure its not a command, emote or url link
                 }
 
-                if (message.Contains("eat") || message.Contains("eating") || message.Contains("food") || message.Contains("donut") || message.Contains("doughnut")) // and it contains these phrases/words
+                bool contains = Regex.IsMatch(message, @"\b(eat|eating|food|donut|doughnut|having a break|dinner|having break|have a break)\b");
+
+                if (contains) // and it contains these phrases/words
                 {
                     var usermsg = msg as IUserMessage;
                     var emote = new Emoji("🍩"); // give him a donut reaction
