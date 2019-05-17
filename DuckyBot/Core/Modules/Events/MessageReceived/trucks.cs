@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Threading.Tasks;
+using DuckyBot.Core.Utilities;
 
 namespace DuckyBot.Core.Modules.Events.MessageReceived
 {
@@ -9,7 +10,7 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
     {
         public static async Task GiveDonut(SocketMessage msg)
         {
-            if (msg.Author.Id == 98511845438009344) // if trucks types
+            if (msg.Author.Id == UserIDs.Me) // if trucks types
             {
                 var message = msg.ToString().ToLowerInvariant();
 

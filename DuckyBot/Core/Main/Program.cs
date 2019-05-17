@@ -49,7 +49,7 @@ namespace DuckyBot.Core.Main
          
             _client.Ready += Client_ready;
 
-            _client.MessageUpdated += MessageEdited;
+            // _client.MessageUpdated += MessageEdited;
 
             _client.MessageDeleted += MessageDeleted;
 
@@ -126,11 +126,7 @@ namespace DuckyBot.Core.Main
             // EVENT HANDLERS
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _client.MessageReceived += General.Gay;
-            _client.MessageReceived += General.Cummo;
-            _client.MessageReceived += General.WhoDidThis;
             _client.MessageReceived += General.HempusJibberish;
-            _client.MessageReceived += General.GoodBot;
-            _client.MessageReceived += General.BadBot;
             _client.MessageReceived += Whiskers.GiveFeels;
             _client.MessageReceived += Ducky.GiveKisses;
             _client.MessageReceived += Trucks.GiveDonut;
@@ -229,16 +225,19 @@ namespace DuckyBot.Core.Main
             await channel.SendMessageAsync($"**[{DateTime.Now}]** **[DELETED MESSAGE]** {msg.Author.Username}: {msg.Content}");
         }
 
-        private static async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel contextChannel)
-        {
-            var msgBeforeUpdate = await cachedMsgBeforeUpdate.GetOrDownloadAsync();
-            var channel = Global.Client.GetGuild(307712604904620034).GetTextChannel(475222498175352834);
-            if (msgBeforeUpdate.Author.Username == "DuckyBot")
-            {
-                return;
-            }
-            await channel.SendMessageAsync($"**[{DateTime.Now}]** **[EDITED MESSAGE]** {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} **->** {msgBeforeUpdate.Author.Username}: {editedMsg.Content}");
-        }       
+        // Spams private channel when links are posted, needs to be changed
+        //
+        //private static async Task MessageEdited(Cacheable<IMessage, ulong> cachedMsgBeforeUpdate, SocketMessage editedMsg, ISocketMessageChannel contextChannel)
+        //{
+        //    var msgBeforeUpdate = await cachedMsgBeforeUpdate.GetOrDownloadAsync();
+        //    var channel = Global.Client.GetGuild(307712604904620034).GetTextChannel(475222498175352834);
+        //    if (msgBeforeUpdate.Author.Username == "DuckyBot")
+        //    {
+        //        return;
+        //    }
+        //    await channel.SendMessageAsync($"**[{DateTime.Now}]** **[EDITED MESSAGE]** {msgBeforeUpdate.Author.Username}: {msgBeforeUpdate.Content} **->** {msgBeforeUpdate.Author.Username}: {editedMsg.Content}");
+        //}       
+        //
 
         private static async Task Log(LogMessage msg) //log message argument
         {
