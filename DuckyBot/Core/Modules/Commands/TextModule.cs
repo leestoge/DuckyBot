@@ -273,7 +273,9 @@ namespace DuckyBot.Core.Modules.Commands
                 var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
                 string emojipasta = dataObject[0].data.children[0].data.selftext; // pull emojipasta from api string
 
-                if (emojipasta.Length >= 2000 || string.IsNullOrEmpty(emojipasta))
+                bool contains = Regex.IsMatch(emojipasta, @"\b(http)\b");
+
+                if (emojipasta.Length >= 2000 || string.IsNullOrEmpty(emojipasta) || emojipasta.Contains("thread") || emojipasta.Contains("https") || emojipasta.Contains("http"))
                 {
                     post = false;
                 }
