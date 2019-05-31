@@ -2,7 +2,7 @@
 using Discord;
 using Discord.WebSocket;
 
-namespace DuckyBot.Core.LevelingSystem // *** DOESN'T WORK ***
+namespace DuckyBot.Core.LevelingSystem // *** DOESN'T WORK  LOL***
 {
     internal static class Leveling /* CODE PROVIDED BY PETER/SPELOS - https://youtu.be/GpHFj9_aey0 */
     {
@@ -27,9 +27,9 @@ namespace DuckyBot.Core.LevelingSystem // *** DOESN'T WORK ***
                             "http://cdn.edgecast.steamstatic.com/steamcommunity/public/images/avatars/ea/ea879dd914a94d7f719bb553306786fa5ae6acb0_full.jpg" // duckybot logo, displayed beside author text
                     }
                 };
-                embed.AddInlineField("LEVEL", newLevel); // users current level
-                embed.AddInlineField("Current XP", userAccount.XP); // users current xp
-                await channel.SendMessageAsync("", embed: embed); // post embed
+                embed.AddField("LEVEL", newLevel, true); // users current level
+                embed.AddField("Current XP", userAccount.XP, true); // users current xp
+                await channel.SendMessageAsync(embed.ToString()); // post embed
             }
         }
     }
