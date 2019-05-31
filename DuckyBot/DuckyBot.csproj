@@ -5,12 +5,16 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Discord.Net" Version="1.0.2" />
-    <PackageReference Include="Discord.Net.Core" Version="1.0.2" />
-    <PackageReference Include="Discord.Net.Webhook" Version="1.0.2" />
-    <PackageReference Include="Discord.Net.WebSocket" Version="1.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Discord.Net" Version="2.1.0" />
+    <PackageReference Include="Discord.Net.Core" Version="2.1.0" />
+    <PackageReference Include="Discord.Net.Webhook" Version="2.1.0" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="2.1.0" />
+    <PackageReference Include="Victoria" Version="4.0.10" />
   </ItemGroup>
 
   <ItemGroup>
