@@ -8,7 +8,7 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
 {
     internal class Ducky : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     {
-        public static async Task GiveKisses(SocketMessage arg)
+        public static async Task FacebookOUT(SocketMessage arg)
         {
             if (arg.Author.Id == UserIDs.Ducky) // if ducky types
             {

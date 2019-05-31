@@ -128,7 +128,7 @@ namespace DuckyBot.Core.Main
             _client.MessageReceived += General.Gay;
             _client.MessageReceived += General.HempusJibberish;
             _client.MessageReceived += Whiskers.GiveFeels;
-            _client.MessageReceived += Ducky.GiveKisses;
+            _client.MessageReceived += Ducky.FacebookOUT;
             _client.MessageReceived += Trucks.GiveDonut;
             _client.MessageReceived += Boon.GivePepega;
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
