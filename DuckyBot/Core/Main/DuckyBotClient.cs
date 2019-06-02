@@ -57,6 +57,8 @@ namespace DuckyBot.Core.Main
             _client.Ready += Client_ready; // reaction handling and bot status handling
             _client.MessageDeleted += MessageDeleted; // showing deleted messages in secret :thinking:
 
+            await _services.GetRequiredService<MusicService>().InitializeAsync();
+
             Global.Client = _client;
             await Task.Delay(-1).ConfigureAwait(false); // wait until the operation ends (never unless closed)
         }
@@ -207,6 +209,7 @@ namespace DuckyBot.Core.Main
                 .AddSingleton(_commands)
                 .AddSingleton<LavaRestClient>()
                 .AddSingleton<LavaSocketClient>()
+                .AddSingleton<MusicService>()
                 .BuildServiceProvider();
     }
 }
