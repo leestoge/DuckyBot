@@ -4,8 +4,11 @@ using Discord.Commands;
 using Discord;
 using Discord.WebSocket;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using static DuckyBot.Core.Utilities.RandomGen;
 using DuckyBot.Core.LevelingSystem.UserAccounts;
+using Newtonsoft.Json;
 
 namespace DuckyBot.Core.Modules.Commands
 {
@@ -107,6 +110,77 @@ namespace DuckyBot.Core.Modules.Commands
                 return;
             }
             await Context.Channel.SendMessageAsync(flipToSend);
+        }
+        [Command("BFV")]
+        [Summary("Show an overview of an input users Battlefield V stats")]
+        public async Task BFVStats([Remainder] string originID)
+        {
+            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
+            {
+                var websiteurl = $"https://api.battlefieldtracker.com/api/v1/bfv/profile/origin/{originID}"; // The API site
+                client.BaseAddress = new Uri(websiteurl); // Redirects our acting web browser to the API site
+                var response = client.GetAsync("").Result; // Verify connection to site
+                response.EnsureSuccessStatusCode(); // Verify connection to site
+                var result = await response.Content.ReadAsStringAsync(); // Gets full website information
+                var dataObject = JsonConvert.DeserializeObject<dynamic>(result); // de-serialise json
+
+                string STATUS = dataObject["status"];
+                
+                await ReplyAsync($"Getting `{originID}'s` stats...");
+
+                if (STATUS == "Success")
+                {
+                    await Task.Delay(1500).ConfigureAwait(false);
+
+                    string name = dataObject["platformUserHandle"];
+                    string AVATAR = dataObject["avatarUrl"];
+                    string SPM = dataObject["data"].stats.scorePerMinute.displayValue.ToString();
+                    string KD = dataObject["data"].stats.kdRatio.displayValue.ToString();
+                    string KPM = dataObject["data"].stats.killsPerMinute.displayValue.ToString();
+                    string WinPercentage = dataObject["data"].stats.wlPercentage.displayValue.ToString();
+                    string Damage = dataObject["data"].stats.damage.displayValue.ToString();
+                    string Resupplies = dataObject["data"].stats.resupplies.displayValue.ToString();
+                    string Heals = dataObject["data"].stats.heals.displayValue.ToString();
+                    string Revives = dataObject["data"].stats.revives.displayValue.ToString();
+
+                    var embed = new EmbedBuilder(); // Create new embedded message
+                    embed.ThumbnailUrl = AVATAR;
+                    embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
+                    embed.AddField("Score per minute", $"`{SPM}`", true);
+                    embed.AddField("K/D ratio", $"`{KD}`", true);
+                    embed.AddField("Win %", $"`{WinPercentage}`", true);
+                    embed.AddField("Kills per minute", $"`{KPM}`", true);
+                    embed.AddField("Damage", $"`{Damage}`", true);
+                    embed.AddField("Resupplies", $"`{Resupplies}`", true);
+                    embed.AddField("Heals", $"`{Heals}`", true);
+                    embed.AddField("Revives", $"`{Revives}`", true);
+                    embed.WithAuthor(author =>
+                    {
+                        author.Name = name + "'s Battlefield V stats overview";
+                        author.IconUrl =
+                            "http://cdn.edgecast.steamstatic.com/steamcommunity/public/images/avatars/ea/ea879dd914a94d7f719bb553306786fa5ae6acb0_full.jpg";
+
+
+                    });
+
+                    embed.WithFooter(footer => // embedded message footer builder
+                    {
+                        footer
+                            .WithText(
+                                $"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
+                            .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto,
+                                64)); // get users avatar for use in footer
+                    });
+
+                    var final = embed.Build(); // final = constructed embedded message
+                    await ReplyAsync("", false, final); // post embedded message
+                }
+                else
+                {
+                    await Task.Delay(1500).ConfigureAwait(false);
+                    await ReplyAsync($"Couldn't find stats for `{originID}`.");
+                }
+            }
         }
     }
 }
