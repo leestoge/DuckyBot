@@ -134,6 +134,7 @@ namespace DuckyBot.Core.Modules.Commands
 
                     string name = dataObject["platformUserHandle"];
                     string AVATAR = dataObject["avatarUrl"];
+                    string playTime = dataObject["data"].stats.timePlayed.displayValue.ToString();
                     string SPM = dataObject["data"].stats.scorePerMinute.displayValue.ToString();
                     string KD = dataObject["data"].stats.kdRatio.displayValue.ToString();
                     string KPM = dataObject["data"].stats.killsPerMinute.displayValue.ToString();
@@ -145,6 +146,7 @@ namespace DuckyBot.Core.Modules.Commands
 
                     var embed = new EmbedBuilder(); // Create new embedded message
                     embed.ThumbnailUrl = AVATAR;
+                    embed.Description = $"Time played: {playTime}";
                     embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
                     embed.AddField("Score per minute", $"`{SPM}`", true);
                     embed.AddField("K/D ratio", $"`{KD}`", true);
