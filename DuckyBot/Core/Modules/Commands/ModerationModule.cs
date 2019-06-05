@@ -2,7 +2,6 @@
 using Discord.Commands;
 using System.Threading.Tasks;
 using Discord;
-using System.Linq;
 using Discord.WebSocket;
 
 namespace DuckyBot.Core.Modules.Commands
@@ -10,6 +9,17 @@ namespace DuckyBot.Core.Modules.Commands
     public class Moderation : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     //SocketCommandContext allows access to the message, channel, server and user the command was invoked by, so works as the base as to how the bot knows where to reply/what user used which command, etc.
     {
+        [Command("Delete")] // Command declaration
+        [Alias("Cleanup")] // command aliases (also trigger task)
+        [Summary("Deletes DuckyBot's most recent messages to prevent chat flood. Can only delete between 1-100 Messages at a time. :shower: (Only Moderators can use this command)")] // command summary
+        [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
+        [RequireBotPermission(GuildPermission.ManageMessages)] //Needed Bot Permissions - must be set by the server administrator
+        public async Task Purge(int num) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
+        {
+            var messages = await Context.Channel.GetMessagesAsync(num).FlattenAsync();
+            await ((ITextChannel)Context.Channel).DeleteMessagesAsync(messages);
+            await Context.Channel.SendMessageAsync($"Successfully deleted `{num}` messages."); // notify user of message deletion success
+        }
         [Command("Ban")] // Command declaration
         [Summary("Ban @Username :octagonal_sign: (Only Moderators can use this command)")] // command summary
         [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
