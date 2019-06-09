@@ -1,11 +1,10 @@
-﻿using System;
-using System.Globalization;
+﻿using Discord;
+using Discord.Commands;
+using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Discord;
-using Discord.Commands;
-using Newtonsoft.Json;
 
 namespace DuckyBot.Core.Modules.Commands
 {
@@ -30,28 +29,46 @@ namespace DuckyBot.Core.Modules.Commands
                 {
                     string name = dataObject["platformUserHandle"];
                     string AVATAR = dataObject["avatarUrl"];
+
                     string playTime = dataObject["data"].stats.timePlayed.displayValue.ToString();
+
                     string SPM = dataObject["data"].stats.scorePerMinute.displayValue.ToString();
+                    string SPM_Per = dataObject["data"].stats.scorePerMinute.displayPercentile.ToString();
+
                     string KD = dataObject["data"].stats.kdRatio.displayValue.ToString();
-                    string KPM = dataObject["data"].stats.killsPerMinute.displayValue.ToString();
+                    string KD_Per = dataObject["data"].stats.kdRatio.displayPercentile.ToString();         
+
                     string WinPercentage = dataObject["data"].stats.wlPercentage.displayValue.ToString();
+                    string WinPercentage_Per = dataObject["data"].stats.wlPercentage.displayPercentile.ToString();
+
+                    string KPM = dataObject["data"].stats.killsPerMinute.displayValue.ToString();
+                    string KPM_Per = dataObject["data"].stats.killsPerMinute.displayPercentile.ToString();
+
                     string Damage = dataObject["data"].stats.damage.displayValue.ToString();
+                    string Damage_Per = dataObject["data"].stats.damage.displayPercentile.ToString();
+
                     string Resupplies = dataObject["data"].stats.resupplies.displayValue.ToString();
+                    string Resupplies_Per = dataObject["data"].stats.resupplies.displayPercentile.ToString();
+
                     string Heals = dataObject["data"].stats.heals.displayValue.ToString();
+                    string Heals_Per = dataObject["data"].stats.heals.displayPercentile.ToString();
+
                     string Revives = dataObject["data"].stats.revives.displayValue.ToString();
+                    string Revives_Per = dataObject["data"].stats.revives.displayPercentile.ToString();
 
                     var embed = new EmbedBuilder(); // Create new embedded message
                     embed.ThumbnailUrl = AVATAR;
                     embed.Description = $"Time played: `{playTime}`";
                     embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
-                    embed.AddField("Score per minute", $"`{SPM}`", true);
-                    embed.AddField("K/D ratio", $"`{KD}`", true);
-                    embed.AddField("Win %", $"`{WinPercentage}`", true);
-                    embed.AddField("Kills per minute", $"`{KPM}`", true);
-                    embed.AddField("Damage", $"`{Damage}`", true);
-                    embed.AddField("Resupplies", $"`{Resupplies}`", true);
-                    embed.AddField("Heals", $"`{Heals}`", true);
-                    embed.AddField("Revives", $"`{Revives}`", true);
+                    embed.AddField("Score per minute", $"`{SPM}` ▸ __**{SPM_Per}**__", true);
+                    embed.AddField("K/D ratio", $"`{KD}` ▸ __**{KD_Per}**__", true);
+                    embed.AddField("Win %", $"`{WinPercentage}` ▸ __**{WinPercentage_Per}**__", true);
+                    embed.AddField("Kills per minute", $"`{KPM}` ▸ __**{KPM_Per}**__", true);
+                    embed.AddField("Damage", $"`{Damage}` ▸ __**{Damage_Per}**__", true);
+                    embed.AddField("Resupplies", $"`{Resupplies}` ▸ __**{Resupplies_Per}**__", true);
+                    embed.AddField("Heals", $"`{Heals}` ▸ __**{Heals_Per}**__", true);
+                    embed.AddField("Revives", $"`{Revives}` ▸ __**{Revives_Per}**__", true);
+
                     embed.WithAuthor(author =>
                     {
                         author.Name = name + "'s Battlefield V stats overview";
@@ -60,11 +77,8 @@ namespace DuckyBot.Core.Modules.Commands
 
                     embed.WithFooter(footer => // embedded message footer builder
                     {
-                        footer
-                            .WithText(
-                                $"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
-                            .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto,
-                                64)); // get users avatar for use in footer
+                        footer.WithText($"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
+                              .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
 
                     var final = embed.Build(); // final = constructed embedded message
@@ -72,7 +86,6 @@ namespace DuckyBot.Core.Modules.Commands
                 }
                 else
                 {
-                    await Task.Delay(1500).ConfigureAwait(false);
                     await ReplyAsync($"Couldn't find stats for `{originID}`.");
                 }
             }
@@ -127,11 +140,8 @@ namespace DuckyBot.Core.Modules.Commands
 
                     embed.WithFooter(footer => // embedded message footer builder
                     {
-                        footer
-                            .WithText(
-                                $"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
-                            .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto,
-                                64)); // get users avatar for use in footer
+                        footer.WithText($"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
+                              .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
 
                     var final = embed.Build(); // final = constructed embedded message
@@ -139,7 +149,6 @@ namespace DuckyBot.Core.Modules.Commands
                 }
                 else
                 {
-                    await Task.Delay(1500).ConfigureAwait(false);
                     await ReplyAsync($"Couldn't find stats for `{originID}`.");
                 }
             }
@@ -206,11 +215,8 @@ namespace DuckyBot.Core.Modules.Commands
 
                     embed.WithFooter(footer => // embedded message footer builder
                     {
-                        footer
-                            .WithText(
-                                $"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
-                            .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto,
-                                64)); // get users avatar for use in footer
+                        footer.WithText($"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
+                              .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
                     });
 
                     var final = embed.Build(); // final = constructed embedded message
@@ -218,14 +224,13 @@ namespace DuckyBot.Core.Modules.Commands
                 }
                 else
                 {
-                    await Task.Delay(1500).ConfigureAwait(false);
                     await ReplyAsync($"Couldn't find stats for `{originID}`.");
                 }
             }
         }
 
         [Command("dicksize")] // Command declaration
-        [Alias("ds", "dick")] // command aliases (also trigger task)
+        [Alias("ds", "dick", "willy")] // command aliases (also trigger task)
         [Summary("Utilising a series of complex algorithms, work out the approximate dick size of a gamer from his battlefield V stats.")]
         // command summary
         public async Task BigDick([Remainder] string originID) // command async task (method basically)
@@ -275,7 +280,6 @@ namespace DuckyBot.Core.Modules.Commands
                 }
                 else
                 {
-                    await Task.Delay(1500).ConfigureAwait(false);
                     await ReplyAsync($"Couldn't find stats for `{originID}`.");
                 }
             }
