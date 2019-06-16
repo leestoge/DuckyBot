@@ -73,6 +73,7 @@ namespace DuckyBot.Core.Main
             // EVENT HANDLERS
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             _client.MessageReceived += General.Gay;
+            _client.MessageReceived += General.JackFrags;
             _client.MessageReceived += General.HempusJibberish;
             _client.MessageReceived += Whiskers.GiveFeels;
             _client.MessageReceived += Ducky.FacebookOUT;
