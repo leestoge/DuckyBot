@@ -107,8 +107,8 @@ namespace DuckyBot.Core.Modules.Commands
             }
         }
 
-        [Command("dicksize")] // Command declaration
-        [Alias("ds", "dick", "willy")] // command aliases (also trigger task)
+        [Command("willy")] // Command declaration
+        [Alias("ds", "dick", "dicksize")] // command aliases (also trigger task)
         [Summary("Utilising a series of complex algorithms, work out the approximate dick size of a gamer from his battlefield V stats.")]
         // command summary
         public async Task BigDick([Remainder] string originID) // command async task (method basically)
@@ -127,30 +127,76 @@ namespace DuckyBot.Core.Modules.Commands
                 if (STATUS == "Success")
                 {
                     string name = dataObject["platformUserHandle"];
-                    float KD = dataObject["data"].stats.kdRatio.displayValue;
-                    float KPM = dataObject["data"].stats.killsPerMinute.displayValue;
-                    float Damage = dataObject["data"].stats.damage.displayValue;
-                    float Revives = dataObject["data"].stats.revives.displayValue;
-                    float TagsTaken = dataObject["data"].stats.dogtagsTaken.displayValue;
-                    float Deaths = dataObject["data"].stats.deaths.displayValue;
-                    float Assists = dataObject["data"].stats.assists.displayValue;
-                    float Wins = dataObject["data"].stats.wins.displayValue;
-                    float Losses = dataObject["data"].stats.losses.displayValue;
-                    float SPM = dataObject["data"].stats.scorePerMinute.displayValue;
-                    float suppressionAssists = dataObject["data"].stats.suppressionAssists.displayValue;
-                    float Headshots = dataObject["data"].stats.headshots.displayValue;
-                    float RevivesReceived = dataObject["data"].stats.revivesRecieved.displayValue;
-                    float longestHeadshot = dataObject["data"].stats.longestHeadshot.displayValue;
-
+                    double KD = dataObject["data"].stats.kdRatio.displayValue;
+                    double KPM = dataObject["data"].stats.killsPerMinute.displayValue;
+                    double Damage = dataObject["data"].stats.damage.displayValue;
+                    double Revives = dataObject["data"].stats.revives.displayValue;
+                    double TagsTaken = dataObject["data"].stats.dogtagsTaken.displayValue;
+                    double Deaths = dataObject["data"].stats.deaths.displayValue;
+                    double Assists = dataObject["data"].stats.assists.displayValue;
+                    double Wins = dataObject["data"].stats.wins.displayValue;
+                    double Losses = dataObject["data"].stats.losses.displayValue;
+                    double SPM = dataObject["data"].stats.scorePerMinute.displayValue;
+                    double suppressionAssists = dataObject["data"].stats.suppressionAssists.displayValue;
+                    double Headshots = dataObject["data"].stats.headshots.displayValue;
+                    double RevivesReceived = dataObject["data"].stats.revivesRecieved.displayValue;
+                    double longestHeadshot = dataObject["data"].stats.longestHeadshot.displayValue;
 
                     var val = Damage / Deaths / Assists * Revives + Wins * TagsTaken - (Wins - Losses) + SPM  - Math.Sqrt(suppressionAssists) - Math.PI - Math.Sqrt(RevivesReceived / 2);
                     var sqrtVal = Math.Sqrt(val / 777) + KPM + KD + Math.Sqrt(Headshots / 22);
-
                     var temp = Math.Sqrt(sqrtVal) + Math.Sqrt(Revives) / 96 + Math.Sqrt(SPM) / 6 - Math.Sqrt(longestHeadshot) / 8;
+                    var final = Math.Round(temp, 2);                
 
-                    var final = Math.Round(temp, 2);
+                    if (final - Math.Round(final) != 0)
+                    {
+                        await ReplyAsync($"{name}'s dick is **{final:0.0} inches** long!");
+                    }
+                    else
+                    {
+                        await ReplyAsync($"{name}'s dick is **{Math.Round(final, 1)} inches** long!");
+                    }
+                }
+                else
+                {
+                    await ReplyAsync($"Couldn't find stats for `{originID}`.");
+                }
+            }
+        }
 
-                    await ReplyAsync($"{name}'s dick is **{final} inches** long!");
+        [Command("saltlevel")] // Command declaration
+        [Alias("sl", "salt", "kid")] // command aliases (also trigger task)
+        [Summary("Utilising a series of complex algorithms, work out the approximate salt level of a gamer from his battlefield V stats.")]
+        // command summary
+        public async Task SaltyBoye([Remainder] string originID) // command async task (method basically)
+        {
+            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
+            {
+                var websiteurl = $"https://api.battlefieldtracker.com/api/v1/bfv/profile/origin/{originID}"; // The API site
+                client.BaseAddress = new Uri(websiteurl); // Redirects our acting web browser to the API site
+                var response = client.GetAsync("").Result; // Verify connection to site
+                response.EnsureSuccessStatusCode(); // Verify connection to site
+                var result = await response.Content.ReadAsStringAsync(); // Gets full website information
+                var dataObject = JsonConvert.DeserializeObject<dynamic>(result); // de-serialise json
+
+                string STATUS = dataObject["status"];
+
+                if (STATUS == "Success")
+                {
+                    string name = dataObject["platformUserHandle"];
+
+                    float Rounds = dataObject["data"].stats.rounds.displayValue;
+                    float RoundsPlayed = dataObject["data"].stats.roundsPlayed.displayValue;
+
+                    var saltLevel = Rounds - RoundsPlayed;
+
+                    if (saltLevel != 0)
+                    {
+                        await ReplyAsync($"{name}'s salt level is `{saltLevel}`.");
+                    }
+                    else
+                    {
+                        await ReplyAsync($"{name} is at a salt level of `0`, impressive.");
+                    }
                 }
                 else
                 {
