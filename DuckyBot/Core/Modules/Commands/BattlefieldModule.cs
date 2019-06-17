@@ -109,8 +109,7 @@ namespace DuckyBot.Core.Modules.Commands
 
         [Command("willy")] // Command declaration
         [Alias("ds", "dick", "dicksize")] // command aliases (also trigger task)
-        [Summary("Utilising a series of complex algorithms, work out the approximate dick size of a gamer from his battlefield V stats.")]
-        // command summary
+        [Summary("Utilising a series of complex algorithms, work out the approximate dick size of a gamer from his battlefield V stats.")] // command summary
         public async Task BigDick([Remainder] string originID) // command async task (method basically)
         {
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
@@ -165,8 +164,7 @@ namespace DuckyBot.Core.Modules.Commands
 
         [Command("saltlevel")] // Command declaration
         [Alias("sl", "salt", "kid")] // command aliases (also trigger task)
-        [Summary("Utilising a series of complex algorithms, work out the approximate salt level of a gamer from his battlefield V stats.")]
-        // command summary
+        [Summary("Utilising a series of complex algorithms, work out the approximate salt level of a gamer from his battlefield V stats.")] // command summary
         public async Task SaltyBoye([Remainder] string originID) // command async task (method basically)
         {
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
