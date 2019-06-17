@@ -23,7 +23,7 @@ namespace DuckyBot.Core.Main
             _client = client ?? new DiscordSocketClient(new DiscordSocketConfig
             {
                 AlwaysDownloadUsers = true,
-                LogLevel = LogSeverity.Debug,
+                LogLevel = LogSeverity.Verbose,
                 DefaultRetryMode = RetryMode.AlwaysRetry,
                 MessageCacheSize = 10 // cached messages stored {per channel} - allows me to see deleted messages etc
             });
