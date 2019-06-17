@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DuckyBot.Core.LevelingSystem.UserAccounts;
+using Newtonsoft.Json;
 using static DuckyBot.Core.Utilities.RandomGen;
 
 namespace DuckyBot.Core.Modules.Commands
@@ -13,30 +17,23 @@ namespace DuckyBot.Core.Modules.Commands
         //SocketCommandContext allows access to the message, channel, server and user the command was invoked by, so works as the base as to how the bot knows where to reply/what user used which command, etc.
     {
         [Command("Stats")] // Command declaration
-        [Summary("Allows users to see their current XP! :sparkles:")]
-        // command summary
-        public async Task
-            Stats([Remainder] string arg = "") // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
-            // the arg parameter allows mentioning of another user in order to see their gained XP, not mentioning a user just provides your own XP.
+        [Summary("Allows users to see their current XP! :sparkles:")] // command summary
+        public async Task Stats([Remainder] string arg = "") // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
+        // the arg parameter allows mentioning of another user in order to see their gained XP, not mentioning a user just provides your own XP.
         {
             SocketUser target; // default the target user whos XP we are returning to null
-            var mentionedUser =
-                Context.Message.MentionedUsers
-                    .FirstOrDefault(); // store the mentioned user (if there is one) as "mentionedUser"
+            var mentionedUser = Context.Message.MentionedUsers.FirstOrDefault(); // store the mentioned user (if there is one) as "mentionedUser"
 
             target = mentionedUser ?? Context.User;
-            var account =
-                UserAccounts.GetAccount(target); // get the users account info by passing in the obtained user ID
-            await Context.Channel.SendMessageAsync(
-                $"{target.Mention} has {account.XP} XP!"); // reply mentioning the user and stating their current XP
+            var account = UserAccounts.GetAccount(target); // get the users account info by passing in the obtained user ID
+            await Context.Channel.SendMessageAsync($"{target.Mention} has {account.XP} XP!"); // reply mentioning the user and stating their current XP
         }
 
         [Command("SetGame")] // Command declaration
         [Summary("Sets a 'Game' for the bot :video_game: (Only Moderators can use this command)")] // command summary
         [RequireUserPermission(GuildPermission.Administrator)]
         // Needed User Permissions //
-        public async Task
-            Setgame([Remainder] string game) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
+        public async Task Setgame([Remainder] string game) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
             await Context.Client.SetGameAsync(game); // change bots playing status to the provided string parameter
             await Context.Channel.SendMessageAsync(
@@ -49,8 +46,7 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task IdiotRole() // command async task (method basically)
         {
             var user = Context.User; // store the user that used the command as var user
-            var role = Context.Guild.Roles.FirstOrDefault(x =>
-                x.Name == "Idiot"); // store the server role called "Idiot" as var role
+            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name == "Idiot"); // store the server role called "Idiot" as var role
 
             await ((IGuildUser) user).AddRoleAsync(role); // modify var users role
             await Context.Channel.SendMessageAsync(Context.User.Mention +
@@ -61,22 +57,13 @@ namespace DuckyBot.Core.Modules.Commands
         }
 
         [Command("dm")] // Command declaration
-        [Summary("Directly message the bot owner. :writing_hand:")]
-        // command summary
-        public async Task
-            Sendmsgtoowner(
-                [Remainder] string text) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
+        [Summary("Directly message the bot owner. :writing_hand:")] // command summary
+        public async Task Sendmsgtoowner([Remainder] string text) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
-            await Context.Channel.SendMessageAsync(Context.User.Mention +
-                                                   " your message has been sent!"); // notify user in the text channel the command was used in
-
+            await Context.Channel.SendMessageAsync(Context.User.Mention + " your message has been sent!"); // notify user in the text channel the command was used in
             var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
-            var z = await application.Owner
-                .GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
-            //embed.Description = $"`{Context.User.Username}` **from** `{Context.Guild.Name}` **sent you a message!**\n\n{text}"; // set embedded message description as user sent a message (With their input message)
-            //await z.SendMessageAsync("", false, embed); // private message me with the users message
-            await z.SendMessageAsync(
-                $"`{Context.User.Username}` **from** `{Context.Guild.Name}` **sent you a message!**\n\n{text}");
+            var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
+            await z.SendMessageAsync($"`{Context.User.Username}` **from** `{Context.Guild.Name}` **sent you a message!**\n\n{text}");
         }
 
         [Command("vid")] // Command declaration
@@ -133,6 +120,61 @@ namespace DuckyBot.Core.Modules.Commands
             }
 
             await Context.Channel.SendMessageAsync(flipToSend);
+        }
+
+        [Command("reddit")] // Command declaration
+        [Alias("redditprofile", "rp")] // command aliases (also trigger task)
+        [Summary("Returns and overview of the input users reddit profile.")] // command summary
+        public async Task RedditProfile([Remainder] string redditAlias) // command async task (method basically)
+        {
+            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
+            {
+                var websiteurl = $"https://www.reddit.com/user/{redditAlias}/about.json"; // The API site
+                client.BaseAddress = new Uri(websiteurl); // Redirects our acting web browser to the API site
+                var response = client.GetAsync("").Result; // Verify connection to site
+                response.EnsureSuccessStatusCode(); // Verify connection to site
+                var result = await response.Content.ReadAsStringAsync(); // Gets full website information
+                var dataObject = JsonConvert.DeserializeObject<dynamic>(result); // de-serialise json
+
+                string name = dataObject["data"].name.ToString();
+                string iconURL = dataObject["data"].icon_img.ToString();
+
+                string link_Karma = dataObject["data"].link_karma.ToString();
+                string comment_Karma = dataObject["data"].comment_karma.ToString();
+
+                var embed = new EmbedBuilder(); // Create new embedded message
+
+                if (iconURL.Contains("styles.redditmedia"))
+                {
+                    Uri uri = new Uri($"{iconURL}");
+                    string fixedIconURL = uri.AbsoluteUri.Replace(uri.Query, string.Empty);
+
+                    embed.ThumbnailUrl = fixedIconURL;
+                }
+                else
+                {
+                    embed.ThumbnailUrl = iconURL;
+                }
+             
+                embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
+                embed.AddField("Comment Karma", $"`{comment_Karma}`", true);
+                embed.AddField("Link Karma", $"`{link_Karma}`", true);
+
+                embed.WithAuthor(author =>
+                {
+                    author.Name = name + "'s Reddit stats overview";
+                    author.IconUrl = "http://cdn.edgecast.steamstatic.com/steamcommunity/public/images/avatars/ea/ea879dd914a94d7f719bb553306786fa5ae6acb0_full.jpg";
+                });
+
+                embed.WithFooter(footer => // embedded message footer builder
+                {
+                    footer.WithText($"Requested by {Context.User.Username} at {DateTime.Now:t}") // footer data, "Requested by [name] at [time] | from [place]
+                          .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
+                });
+
+                var final = embed.Build(); // final = constructed embedded message
+                await ReplyAsync("", false, final); // post embedded message
+            }
         }
     }
 }
