@@ -50,7 +50,7 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                 return; // make sure its not a command, emote or url link
             }
 
-            bool containsJackFragsNonsense = Regex.IsMatch(message, @"\b(jack frags here|i'll see you guys in the next one|ill see you guys in the next one|best infantry game|dislike if you didnt|dislike if you disliked it|dislike the video if you didnt like it|dislike the video if you didn't like it|like if you liked it|like the video if you liked it|is it still good|back to battlefield|the thompson|is it any good)\b");
+            bool containsJackFragsNonsense = Regex.IsMatch(message, @"\b(jack frags here|i'll see you guys in the next one|ill see you guys in the next one|best infantry game|dislike if you didnt|dislike if you disliked it|dislike the video if you didnt like it|dislike the video if you didn't like it|like if you liked it|like the video if you liked it|is it still good|back to battlefield|the thompson|is it any good|left side or right side|full left side|full right side|sometimes i go left side|sometimes i go right side)\b");
 
             var gameClickbait = new[] // array of strings
             {
@@ -87,6 +87,9 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                 $"{gameClickbait[Instance.Next(gameClickbait.Length)]} Pro Tips and Secrets",
                 $"{gameClickbait[Instance.Next(gameClickbait.Length)]} Shotgun Buff",
                 $"When {gameClickbait[Instance.Next(gameClickbait.Length)]} players Rage",
+                "Sometimes I go left side, but then other times I go right side",
+                "I go full left side on this one",
+                "I go full right side on this one",
             };
 
             var rand = Instance.Next(replies.Length); // get random number between 0 and array length
