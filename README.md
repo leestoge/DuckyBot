@@ -18,6 +18,8 @@ DuckyBot was initially inspired by a friend going by the alias "Ducky" who happe
 
 * **Random text posting (locally stored and through various APIs)**
 * **Random image posting (locally stored and through various APIs)**
+* **Battlefield V stat related commands**
+* **Reddit API stat related commands**
 * **Fitting reactions to user messages (under set conditions)**
 * **Dynamic text updating functionality**
 * **Ability to re-format/manipulate entered user text**
