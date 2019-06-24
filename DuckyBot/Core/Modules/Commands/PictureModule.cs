@@ -44,27 +44,7 @@ namespace DuckyBot.Core.Modules.Commands
                 await Context.Channel.SendMessageAsync("ook ook");
             }
         }
-        [Command("corona")] // Command declaration
-        [Alias("Corona")] // command aliases (also trigger task)
-        [Summary("Find out what happens to Ducky after 6 bottles of Corona :beers:")] // command summary
-        public async Task SixBottlesLater() // command async task (method basically)
-        {
-            await Context.Channel.SendMessageAsync("6 Bottles of Corona Later.."); // message
-            await Context.Channel.SendFileAsync("Pictures/6bottles.gif"); // post gif
-            await Context.Channel.SendMessageAsync("...Fuck me"); // message
-            Console.WriteLine("!corona executed successfully in " + Context.Guild.Name);
-        }
-        [Command("coffee")] // Command declaration
-        [Alias("coffeepepe", "pepe")] // command aliases (also trigger task)
-        [Summary("D A I L Y G R I N D")] // command summary
-        public async Task CoffeePepe() // command async task (method basically)
-        {        
-            var dirInfo = Directory.EnumerateFiles("Pictures/coffee/").ToList();
-            int randomIndex = Instance.Next(0, dirInfo.Count); // get random number between 0 and list length
-            var randomFilePathString = dirInfo[randomIndex];
 
-            await Context.Channel.SendFileAsync(randomFilePathString); // send file at our string file path we randomly get
-        }
         [Command("cat")] // Command declaration
         [Alias("cate", "kitty", "kitten")] // command aliases (also trigger task)
         [Summary("Posts random cat pictures :cat:")] // command summary
@@ -101,6 +81,7 @@ namespace DuckyBot.Core.Modules.Commands
                 }
             } while (post == false); // Loop until its an image
         }
+
         [Command("dog")] // Command declaration
         [Alias("doggo", "pupper", "yapper")] // command aliases (also trigger task)
         [Summary("Posts random dog pictures :dog:")] // command summary
@@ -144,6 +125,50 @@ namespace DuckyBot.Core.Modules.Commands
                 }
             } while (post == false); // Loop until DogImage doesn't have an .mp4 extension
         }
+
+        [Command("fox")] // Command declaration
+        [Alias("foxy", "catdog", "dogcat")] // command aliases (also trigger task)
+        [Summary("Posts random fox pictures :fox:")] // command summary
+        public async Task Fox()
+        {
+            bool post; // Post default to true
+            do
+            {
+                using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a web browser
+                {
+                    const string websiteurl = "https://randomfox.ca/floof/"; // The API site
+                    client.BaseAddress = new Uri(websiteurl); // Redirects our acting web browser to the API site
+                    var response = client.GetAsync("").Result; // Verify connection to site
+                    response.EnsureSuccessStatusCode(); // Verify connection to site
+                    var result = await response.Content.ReadAsStringAsync(); // Gets full website information
+                    var json = JObject.Parse(result); // Reads the json from the html
+
+                    var dogImage = json["image"].ToString(); // Saves the detected url to DogImage string (with "url" identifier prefix)
+
+                    if (dogImage.Contains("mp4") || dogImage.EndsWith(".gifv")) // check if our DogImage string contains an .mp4 or .gifv extension
+                    {
+                        post = false; // Do not post if this is the case (They don't display properly in Discord within the embed)
+                    }
+                    else // All other extensions
+                    {
+                        post = true; // Post them
+                        var embed = new EmbedBuilder // Create new embedded message
+                        {
+                            Color = new Color(255, 82, 41) // set embedded message trim colour to orange
+                        };
+                        embed.WithImageUrl(ApiHelper.GetRedirectUrl(dogImage)); // place picture inside embedded message (ensures the picture is posted with no link shown)
+                        embed.WithFooter(footer =>
+                        {
+                            footer.WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: https://randomfox.ca")
+                                  .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64));
+                        });
+                        var final = embed.Build();
+                        await ReplyAsync("", false, final); // Sends the the embedded message (picture)
+                    }
+                }
+            } while (post == false); // Loop until DogImage doesn't have an .mp4 extension
+        }
+
         [Command("aesthetic")]
         [Alias("a", "outrun")]
         [Summary("Posts random ＡＥＳＴＨＥＴＩＣ　ワネヘ images")] // command summary
@@ -180,42 +205,7 @@ namespace DuckyBot.Core.Modules.Commands
                 }
             } while (post == false); // Loop until its an image
         }
-        [Command("gamer")] // We live in a society...
-        [Alias("g", "gamersriseup", "veronica")]
-        [Summary("We live in a society")] // command summary
-        public async Task GamersRiseUp()
-        {
-            bool post; // Post default to true
-            do
-            {
-                var weblink = "https://www.reddit.com/r/GamersRiseUp/random/.json"; // api link
-                var httpClient = new HttpClient(); //This acts like a web browser
-                var json = await httpClient.GetStringAsync(weblink);
 
-                var dataObject = JsonConvert.DeserializeObject<dynamic>(json); // deserialize json
-                string image = dataObject[0].data.children[0].data.url.ToString(); // pull image from api string
-
-                if (image.EndsWith(".jpg") || image.EndsWith(".png") || image.EndsWith(".gif")) // if its an image
-                {
-                    post = true; //post it
-                    var embed = new EmbedBuilder(); // Create new embedded message
-                    embed.WithImageUrl(ApiHelper.GetRedirectUrl(image)); // embed the image within the message
-                    embed.WithColor(new Color(255, 82, 41)); // set embedded message trim colour to orange
-                    embed.WithFooter(footer => // embedded message footer builder
-                    {
-                        footer
-                        .WithText($"Requested by {Context.User.Username} at {DateTime.Now:t} | From: r/GamersRiseUp") // footer data, "Requested by [name] at [time] | from [place]
-                        .WithIconUrl(Context.User.GetAvatarUrl(ImageFormat.Auto, 64)); // get users avatar for use in footer
-                    });
-                    var final = embed.Build(); // final = constructed embedded message
-                    await Context.Channel.SendMessageAsync("", false, final); // post embedded message
-                }
-                else // if its not an image (youtube video, etc)
-                {
-                    post = false; // do not post it
-                }
-            } while (post == false); // Loop until its an image
-        }
         [Command("anime")]
         [Alias("hentai", "hempus")]
         [Summary("<:hempus:446374082481750017>")] // command summary
@@ -252,6 +242,7 @@ namespace DuckyBot.Core.Modules.Commands
                 }
             } while (post == false); // Loop until its a gif
         }
+
         [Command("justfuckmyshitup")]
         [Alias("fuckmeup", "fam","fuckmeupfam", "justfuckmeupfam", "justfuckmeup")]
         [Summary("Post pictures of people who've just been fucked up fam :100:")] // command summary
