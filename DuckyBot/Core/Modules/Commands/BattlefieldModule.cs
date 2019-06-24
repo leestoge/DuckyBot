@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DuckyBot.Core.Modules.Commands
 {
-    public class BattlefieldModule : ModuleBase<SocketCommandContext> // Define module and direct to command handler
+    public class Battlefield : ModuleBase<SocketCommandContext> // Define module and direct to command handler
     {
         [Command("BFV")]
         [Summary("Show an overview of an input users Battlefield V stats")]
