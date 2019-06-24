@@ -6,11 +6,11 @@ using DuckyBot.Core.Utilities;
 
 namespace DuckyBot.Core.Modules.Commands
 {
-    public class MusicModule : ModuleBase<SocketCommandContext>
+    public class Music : ModuleBase<SocketCommandContext>
     {
         private MusicService _musicService;
 
-        public MusicModule(MusicService musicService)
+        public Music(MusicService musicService)
         {
             _musicService = musicService;
         }
