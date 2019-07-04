@@ -16,9 +16,13 @@ namespace DuckyBot.Core.Modules.Commands
         [RequireBotPermission(GuildPermission.ManageMessages)] //Needed Bot Permissions - must be set by the server administrator
         public async Task Purge(int num) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
-            var messages = await Context.Channel.GetMessagesAsync(num).FlattenAsync();
-            await ((ITextChannel)Context.Channel).DeleteMessagesAsync(messages);
-            await Context.Channel.SendMessageAsync($"Successfully deleted `{num}` messages."); // notify user of message deletion success
+            var messages = await Context.Channel.GetMessagesAsync(num + 1).FlattenAsync();
+            await ((ITextChannel) Context.Channel).DeleteMessagesAsync(messages);
+
+            var notify = await Context.Channel.SendMessageAsync($"Successfully deleted `{num}` messages."); // notify user of message deletion success
+            await Task.Delay(3000).ConfigureAwait(false);
+            await ((ITextChannel) Context.Channel).DeleteMessageAsync(notify);
+
         }
         [Command("Ban")] // Command declaration
         [Summary("Ban @Username :octagonal_sign: (Only Moderators can use this command)")] // command summary
