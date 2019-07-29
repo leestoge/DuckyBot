@@ -20,11 +20,11 @@ DuckyBot was initially inspired by a friend going by the alias "Ducky" who happe
 * **Random image posting (locally stored and through various APIs)**
 * **Battlefield V stat related commands**
 * **Reddit API stat related commands**
-* **Fitting reactions to user messages (under set conditions)**
+* **Fitting reactions to user messages through both emotes and text (under set conditions)**
 * **Dynamic text updating functionality**
 * **Ability to re-format/manipulate entered user text**
 * **Fully fledged turn based combat game for 2 users**
-* **Timer functionality**
+* **Timer functionality to automate a task under a set time**
 * **User levelling system**
 * **Persistent data**
 * **Advanced moderation capabilities**
