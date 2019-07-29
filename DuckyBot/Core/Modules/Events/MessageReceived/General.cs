@@ -62,6 +62,7 @@ namespace DuckyBot.Core.Modules.Events.MessageReceived
                 "Bad Company 2",
                 "Battlefield One",
                 "Battlefield 1",
+                "Star Wars Battlefront 2",
             };
 
             var replies = new[] // array of strings
