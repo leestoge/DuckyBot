@@ -160,7 +160,7 @@ namespace DuckyBot.Core.Main
         {
             var msg = await msgCache.GetOrDownloadAsync();
             var channel = Global.Client.GetGuild(307712604904620034).GetTextChannel(475222498175352834);
-            if (msg.Author.Username == "DuckyBot")
+            if (msg.Author.IsBot)
             {
                 return;
             }
