@@ -49,11 +49,12 @@ namespace DuckyBot.Core.Modules.Commands
             var role = Context.Guild.Roles.FirstOrDefault(x => x.Name == "Idiot"); // store the server role called "Idiot" as var role
 
             await ((IGuildUser) user).AddRoleAsync(role); // modify var users role
-            await Context.Channel.SendMessageAsync(Context.User.Mention +
-                                                   " idiot"); // notify user in the text channel the command was used in
+            await Context.Channel.SendMessageAsync(Context.User.Mention + " idiot"); // notify user in the text channel the command was used in
 
             if (role == null) // If role not found
+            {
                 await Context.Channel.SendMessageAsync("Cannot find role `Idiot`."); // notify user
+            }
         }
 
         [Command("dm")] // Command declaration
