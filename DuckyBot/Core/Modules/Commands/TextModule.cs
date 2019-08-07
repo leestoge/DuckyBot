@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord.Commands;
-using Discord;
 using System.Linq;
 using System.Collections.Generic;
 using static DuckyBot.Core.Utilities.RandomGen;
@@ -12,6 +11,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
+using Discord.WebSocket;
 
 namespace DuckyBot.Core.Modules.Commands
 {
@@ -35,24 +35,32 @@ namespace DuckyBot.Core.Modules.Commands
                 await Context.Channel.SendMessageAsync(quoteToPost); // reply with the stored string
             } while (false);
         }
-        [Command("addtdp"), Summary("Add quotes to the !tdp command <:tdp:266702060454412288> (Only Moderators can use this command)")] // Command declaration and summary
-        [RequireUserPermission(GuildPermission.Administrator)] // Needed User Permissions //
+        [Command("addtdp")]
+        [Alias("at")] // command aliases (also trigger task)
+        [Summary("Add quotes to the !tdp command <:tdp:266702060454412288> (Only TDP Members can use this command)")] // Command declaration and summary
         public async Task AddQuote([Remainder] string quote) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
             const string path = @"F:\Visual Studio\Projects\DuckyBot\DuckyBot\Resources\TDPQuotes.txt"; // would have to be manually set up as it currently is
 
             // should probably add something here to check for the above path, and create it if its not found.
 
-            //TDPQuotes.Add(quote); // Add the parameter (quote) to the !ducky command list - implemented quotes currently lost upon bot process ending, must be added manually during downtime.
-            using (var textEditor = File.AppendText("Resources/TDPQuotes.txt"))
+            if (((SocketGuildUser)Context.User).Roles.Any(r => r.Name == "TDP Member"))
             {
-                textEditor.WriteLine(quote);
+                using (var textEditor = File.AppendText("Resources/TDPQuotes.txt"))
+                {
+                    textEditor.WriteLine(quote);
+                }
+                using (var textEditor = File.AppendText(path))
+                {
+                    textEditor.WriteLine(quote);
+                }
+                await Context.Channel.SendMessageAsync("Successfully added '**" + quote + "**'  to the `!tdp` command.");  // Notify user their parameter has been successfully added.
             }
-            using (var textEditor = File.AppendText(path))
+            else
             {
-                textEditor.WriteLine(quote);
+                await ReplyAsync(Context.User.Mention + " you don't appear to be a TDP Member yet so you are unable to add quotes to the `!tdp` command.");
             }
-            await Context.Channel.SendMessageAsync("Successfully added '**" + quote + "**'  to the `!tdp` command.");  // Notify user their parameter has been successfully added.
+            
         }
         [Command("8ball")] // Command declaration
         [Summary("Ask the great and wise 8 Ball to tell your fortune :four_leaf_clover:")] // command summary
