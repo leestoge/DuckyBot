@@ -170,7 +170,7 @@ namespace DuckyBot.Core.Main
                 return;
             }
 
-            await Task.Delay(3000).ConfigureAwait(false);
+            await Task.Delay(5000).ConfigureAwait(false);
             await channel.SendMessageAsync($"**[{DateTime.Now}]** **[DELETED MESSAGE]** {msg.Author.Username}: {msg.Content}");
         }
 
