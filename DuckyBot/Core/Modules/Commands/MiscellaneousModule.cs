@@ -35,8 +35,7 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task Setgame([Remainder] string game) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
             await Context.Client.SetGameAsync(game); // change bots playing status to the provided string parameter
-            await Context.Channel.SendMessageAsync(
-                $"Successfully set my playing status to '**{game}**'"); // notify user in the text channel the command was used in
+            await Context.Channel.SendMessageAsync($"Successfully set my playing status to '**{game}**'"); // notify user in the text channel the command was used in
         }
 
         [Command("idiot")] // Command declaration
@@ -107,14 +106,11 @@ namespace DuckyBot.Core.Modules.Commands
             }
             else
             {
-                await Context.Channel.SendMessageAsync(
-                    "Something has went wrong! STOGE has been notified."); // tell user an error occurred
+                await Context.Channel.SendMessageAsync("Something has went wrong! STOGE has been notified."); // tell user an error occurred
 
                 var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
-                var z = await application.Owner
-                    .GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
-                await z.SendMessageAsync(
-                    $"[{DateTime.Now.ToString("t")}] `!flip` error: error establishing random number"); // private message me with error reason (with time error occured)
+                var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
+                await z.SendMessageAsync($"[{DateTime.Now.ToString("t")}] `!flip` error: error establishing random number"); // private message me with error reason (with time error occured)
 
                 return;
             }
