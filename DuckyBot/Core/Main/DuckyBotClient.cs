@@ -8,7 +8,6 @@ using Discord.WebSocket;
 using DuckyBot.Core.Modules.Events.MessageReceived;
 using DuckyBot.Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using Victoria;
 
 namespace DuckyBot.Core.Main
 {
@@ -56,8 +55,6 @@ namespace DuckyBot.Core.Main
 
             _client.Ready += Client_ready; // reaction handling and bot status handling
             _client.MessageDeleted += MessageDeleted; // showing deleted messages in secret :thinking:
-
-            await _services.GetRequiredService<MusicService>().InitializeAsync();
 
             Global.Client = _client;
             await Task.Delay(-1).ConfigureAwait(false); // wait until the operation ends (never unless closed)
@@ -170,7 +167,11 @@ namespace DuckyBot.Core.Main
                 return;
             }
 
-            await Task.Delay(5000).ConfigureAwait(false);
+            if (msg.ToString().StartsWith("!"))
+            {
+                return;
+            }
+
             await channel.SendMessageAsync($"**[{DateTime.Now}]** **[DELETED MESSAGE]** {msg.Author.Username}: {msg.Content}");
         }
 
@@ -209,9 +210,6 @@ namespace DuckyBot.Core.Main
             => new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
-                .AddSingleton<LavaRestClient>()
-                .AddSingleton<LavaSocketClient>()
-                .AddSingleton<MusicService>()
                 .BuildServiceProvider();
     }
 }
