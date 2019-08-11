@@ -1,5 +1,4 @@
-﻿
-namespace DuckyBot.Core.Utilities
+﻿namespace DuckyBot.Core.Utilities
 {
     internal static class UserIDs
     {
