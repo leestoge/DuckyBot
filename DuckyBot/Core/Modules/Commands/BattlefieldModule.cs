@@ -146,7 +146,7 @@ namespace DuckyBot.Core.Modules.Commands
                     var temp = Math.Sqrt(sqrtVal) + Math.Sqrt(Revives) / 96 + Math.Sqrt(SPM) / 6 - Math.Sqrt(longestHeadshot) / 8;
                     var final = Math.Round(temp, 2);                
 
-                    if (final - Math.Round(final) != 0)
+                    if (Math.Abs(final - Math.Round(final)) > 0)
                     {
                         await ReplyAsync($"{name}'s dick is **{final:0.0} inches** long!");
                     }
@@ -187,7 +187,7 @@ namespace DuckyBot.Core.Modules.Commands
 
                     var saltLevel = Rounds - RoundsPlayed;
 
-                    if (saltLevel != 0)
+                    if (Math.Abs(saltLevel) > 0)
                     {
                         await ReplyAsync($"{name}'s salt level is `{saltLevel}`.");
                     }
