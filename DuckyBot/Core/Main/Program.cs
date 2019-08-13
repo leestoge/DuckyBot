@@ -2,7 +2,7 @@
 
 namespace DuckyBot.Core.Main
 {
-    public class Program 
+    public static class Program 
     {
         static async Task Main(string[] args) 
             => await new DuckyBotClient().InitializeAsync();
