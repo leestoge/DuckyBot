@@ -38,7 +38,7 @@ namespace DuckyBot.Core.Main
 
             var userMessage = msg as SocketUserMessage;
 
-            if (userMessage is null)
+            if (userMessage == null)
             {
                 return;
             }
