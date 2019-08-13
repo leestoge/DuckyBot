@@ -13,9 +13,9 @@ namespace DuckyBot.Core.Main
 {
     class DuckyBotClient
     {
-        private DiscordSocketClient _client;
-        private CommandService _commands;
-        private IServiceProvider _services;
+        private  readonly DiscordSocketClient _client;
+        private readonly CommandService _commands;
+        
 
         public DuckyBotClient(DiscordSocketClient client = null, CommandService commands = null)
         {
@@ -48,8 +48,8 @@ namespace DuckyBot.Core.Main
             await _client.StartAsync(); // start up bot
             _client.Log += LogAsync; // lets bot know where to post log entries
 
-            _services = SetupServices();
-            var cmdHandler = new CommandHandler(_client, _commands, _services);
+            var services = SetupServices();
+            var cmdHandler = new CommandHandler(_client, _commands, services);
             await cmdHandler.InitializeAsync();
 
 
