@@ -60,8 +60,8 @@ namespace DuckyBot.Core.Modules.Commands
         public async Task Sendmsgtoowner([Remainder] string text) // command async task that takes in a parameter (remainder represents a space between the command and the parameter)
         {
             await Context.Channel.SendMessageAsync(Context.User.Mention + " your message has been sent!"); // notify user in the text channel the command was used in
-            var application = await Context.Client.GetApplicationInfoAsync(); // gets channels from discord client
-            var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my dm channel in order to private message me
+            var application = await Context.Client.GetApplicationInfoAsync(); // gets client details from bot
+            var z = await application.Owner.GetOrCreateDMChannelAsync(); // find my user id from bot client details
             await z.SendMessageAsync($"`{Context.User.Username}` **from** `{Context.Guild.Name}` **sent you a message!**\n\n{text}");
         }
 
