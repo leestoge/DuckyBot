@@ -44,6 +44,9 @@ namespace DuckyBot.Core.Modules.Commands
 
             // should probably add something here to check for the above path, and create it if its not found.
 
+            var application = await Context.Client.GetApplicationInfoAsync(); // gets client details from bot
+            var Me = application.Owner.Id; // find my user id from bot client details
+
             if (((SocketGuildUser)Context.User).Roles.Any(r => r.Name == "TDP Member"))
             {
                 using (var textEditor = File.AppendText("Resources/TDPQuotes.txt"))
@@ -55,6 +58,19 @@ namespace DuckyBot.Core.Modules.Commands
                     textEditor.WriteLine(quote);
                 }
                 await Context.Channel.SendMessageAsync("Successfully added '**" + quote + "**'  to the `!tdp` command.");  // Notify user their parameter has been successfully added.
+            }
+            else if (((SocketGuildUser)Context.User).Id == Me)
+            {
+                using (var textEditor = File.AppendText("Resources/TDPQuotes.txt"))
+                {
+                    await textEditor.WriteLineAsync(quote).ConfigureAwait(false);
+                }
+                using (var textEditor = File.AppendText(path))
+                {
+                    textEditor.WriteLine(quote);
+                }
+                Console.WriteLine($"{DateTime.Now:t}: Successfully added {quote} to !ducky"); // Notify me in console the time that this happened
+                await Context.Channel.SendMessageAsync("Successfully added '**" + quote + "**'  to the `!ducky` command.");  // Notify user their parameter has been successfully added.
             }
             else
             {
